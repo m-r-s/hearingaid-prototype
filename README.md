@@ -2,10 +2,10 @@
 
 
 # A mobile hearing aid prototype based on openMHA
-This repository contains the information to build a mobile prototype of a hearing aid based on the open Master Hearing Aid ([openMHA](https://www.openmha.org)), a free software platform for real-time audio signal processing.
-I developed this prototype for a lab course at my university ([the Carl-von-Ossietzky Universität Oldenburg](https://uni-ol.de)) and found that the building instructions could be of public interest.
+This repository holds the information to build a mobile prototype of a hearing aid based on the open Master Hearing Aid ([openMHA](https://www.openmha.org)), a free software platform for real-time audio signal processing.
+We developed this prototype for a lab course at the [Carl-von-Ossietzky Universität Oldenburg](https://uni-ol.de) and found that the building instructions could be of public interest.
 
-Author: Marc René Schädler (marc.r.schaedler@uni-oldenburg.de)
+Corresponding author: Marc René Schädler (marc.r.schaedler@uni-oldenburg.de)
 
 
 ## Aims
@@ -44,22 +44,29 @@ Software:
 
 ## Main characteristics
 * Free software: Control is yours, you can change every single bit of it!
-* Efficient real-time implementations of research-approved hearing algorithms
+* Efficient real-time implementations of research-approved hearing algorithms (c.f. [openMHA at Github](https://github.com/HoerTech-gGmbH/openMHA)
 * Competitively low delays: Less than 10ms
 * Looks like wearing in-ear headphones
-* Everything fits in a belt bag with several hours of autonomy
-* Sum of all components is about 250€
+* Whole setup fits in a belt bag
+* Sum of all components is about 250 €
 
 
 ## Some cool features
-* Pre-configured SD-card image available!
+* Pre-configured SD-card image (~500 Mb) available for download!
 * Autostart in about 10 seconds
-* Connect via wifi to the hearing aid prototype and "fit" it using the the provided fitting GUI
+* Several hours of autonomy
+* Connect via wifi to the hearing aid prototype
+* Fit it to a specific hearing profile using openMHA's graphical fitting interface
 * Extend openMHA with own algorithms
-* Combine with any jack-based software (play, process, or record)
+* Combine it with any jack-based software (play, process, or record)
 
 
 ## Instructions
 This page is only a teaser :)
-The actual in-depth instructions are deployed in the [corresponding wiki](https://github.com/m-r-s/hearingaid-prototype/wiki).
+This repository only contains the employed openMHA configuration file and a start script.
+The actual instructions are deployed in the [corresponding wiki](https://github.com/m-r-s/hearingaid-prototype/wiki).
+Feel free to test them and contribute.
+Be sure to read the [openMHA documentation](https://github.com/HoerTech-gGmbH/openMHA) (pdf files) if you want to dig deeper into signal processing for hearing aids.
+
+
 
