@@ -44,7 +44,7 @@ Software:
 
 ## Main characteristics
 * Free software: Control is yours, you can change every single bit of it!
-* Efficient real-time implementations of research-approved hearing algorithms (c.f. [openMHA at Github](https://github.com/HoerTech-gGmbH/openMHA)
+* Efficient real-time implementations of research-approved hearing algorithms (c.f. [openMHA at Github](https://github.com/HoerTech-gGmbH/openMHA))
 * Competitively low delays: Less than 10ms
 * Looks like wearing in-ear headphones
 * Whole setup fits in a belt bag
@@ -63,7 +63,7 @@ Software:
 
 ## Instructions
 This page is only a teaser :)
-This repository only contains the employed openMHA configuration file and a start script.
+The files in this repository only contain the employed openMHA configuration file and a start script.
 The actual instructions are deployed in the [corresponding wiki](https://github.com/m-r-s/hearingaid-prototype/wiki).
 Feel free to test them and contribute.
 Be sure to read the [openMHA documentation](https://github.com/HoerTech-gGmbH/openMHA) (pdf files) if you want to dig deeper into signal processing for hearing aids.
