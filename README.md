@@ -63,7 +63,7 @@ Software:
 
 ## Instructions
 This page is only a teaser :)
-The files in this repository only contain the employed openMHA configuration file and a start script.
+The files in this repository only contain the employed openMHA configuration file, a start script and some example configuration files.
 The actual instructions are deployed in the [corresponding wiki](https://github.com/m-r-s/hearingaid-prototype/wiki).
 Feel free to test them and contribute.
 Be sure to read the [openMHA documentation](https://github.com/HoerTech-gGmbH/openMHA) (pdf files) if you want to dig deeper into signal processing for hearing aids.
