@@ -2,7 +2,7 @@
 
 
 # A mobile hearing aid prototype based on openMHA
-This repository holds the information to build a mobile prototype of a hearing aid based on the open Master Hearing Aid ([openMHA](https://www.openmha.org)), a free software platform for real-time audio signal processing.
+This repository holds the information to build a mobile prototype of a hearing aid based on the [open Master Hearing Aid](https://www.openmha.org) (openMHA), a free software platform for real-time audio signal processing.
 We developed this prototype for a lab course at the [Carl-von-Ossietzky Universität Oldenburg](https://uni-ol.de) and found that the building instructions could be of public interest.
 
 Corresponding author: Marc René Schädler (marc.r.schaedler@uni-oldenburg.de)
