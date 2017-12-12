@@ -9,7 +9,7 @@ Corresponding author: Marc René Schädler (marc.r.schaedler@uni-oldenburg.de)
 
 
 ## Aims
-The prototype was deliberately designed using affordable consumer hardware and open source software. The aim is to lower the entry barrier for hearing aid development and enable any interested person to get actively involved in testing and improving hearing devices; empowering power-users.
+The prototype was deliberately designed using affordable consumer hardware and open source software. The aim is to lower the entry barrier for hearing aid development and facilitate any interested person to get actively involved in testing and improving hearing devices; empowering power-users.
 
 
 ## Warning and disclaimer
@@ -63,10 +63,8 @@ Software:
 
 ## Instructions
 This page is only a teaser :)
-The files in this repository only contain the employed openMHA configuration file, a start script and some example configuration files.
+The files in this repository only contain the employed openMHA configuration file, a start script, and some example configuration files.
 The actual instructions are deployed in the [corresponding wiki](https://github.com/m-r-s/hearingaid-prototype/wiki).
 Feel free to test them and contribute.
 Be sure to read the [openMHA documentation](https://github.com/HoerTech-gGmbH/openMHA) (pdf files) if you want to dig deeper into signal processing for hearing aids.
-
-
 
