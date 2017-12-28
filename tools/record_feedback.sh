@@ -15,6 +15,10 @@ if [ ! -e "$PLAYFILE" ]; then
   exit 1
 fi
 
+echo "Warmup"
+mplayer &> /dev/null
+jack_rec &> /dev/null
+
 echo "Start playback"
 mplayer -ao jack:name=mplayer:noestimate:port=system "${PLAYFILE}" &
 sleep 1
