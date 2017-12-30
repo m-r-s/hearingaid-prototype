@@ -2,7 +2,7 @@
 
 fs = 48000; % Hz
 duration = 5; % seconds
-levels = [-80 -70 -60 -50 -40 -30 -20 -10 0]; % dB FS
+levels = [-80 -70 -60 -50 -40 -30 -20 -10 -0.1]; % dB FS
 
 freq_start = 100; % Hz
 freq_stop = 8000; % Hz
