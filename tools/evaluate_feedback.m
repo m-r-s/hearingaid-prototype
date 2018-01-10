@@ -4,12 +4,21 @@ clear
 clc
 
 [signal, fs] = audioread('feedback.wav');
+signal = signal(1000:end-1000,:);
+
+max_samples = round(100./1000.*fs);
+min_freq = fs./max_samples;
+
 signal_fft = fft(signal);
-H = signal_fft(:,[4,3])./signal_fft(:,[1,2]);
+% Remove frequencies with periods that dont fit once in the window
+signal_fft(1:1+round(min_freq./fs.*size(signal,1)),3:4) = 0;
+signal_fft(1+end-round(min_freq./fs.*size(signal,1)):end,3:4) = 0;
+H = signal_fft(:,[3,4])./signal_fft(:,[1,2]);
 feedback = real(ifft(H));
-max_samples = round(fs.*0.01);
-max_amplitude = max(abs(feedback(:)));
-feedback_fft = fft(feedback(1:max_samples,:));
+feedback_short = feedback(1:max_samples,:);
+feedback_fft = fft(feedback_short);
+
+max_amplitude = max(abs(feedback));
 
 figure('Position',[0 0 800 800],'Visible','on');
 for i=1:2
