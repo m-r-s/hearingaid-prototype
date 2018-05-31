@@ -3,7 +3,7 @@ close all
 clear
 clc
 
-[signal, fs] = audioread('feedback.wav');
+[signal, fs] = audioread('/tmp/feedback.wav');
 signal = signal(1000:end-1000,:);
 
 max_samples = round(100./1000.*fs);
@@ -22,7 +22,7 @@ max_amplitude = max(abs(feedback));
 
 figure('Position',[0 0 800 800],'Visible','on');
 for i=1:2
-  subplot(2,2,i);    
+  subplot(2,2,i);
   plot((0:max_samples-1)./fs.*1000,feedback(1:max_samples,i),'k');
   xlim([0 10]);
   ylim([-1.1 1.1].*max_amplitude);

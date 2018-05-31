@@ -3,7 +3,7 @@ close all
 clear
 clc
 
-[signal, fs] = audioread('inout.wav');
+[signal, fs] = audioread('/tmp/inout.wav');
 
 analysis_length = 100; % ms
 
