@@ -9,7 +9,7 @@ error() {
 
 # Compile all C code
 
-# static feedback cancellation as JACK plugin
 (cd tools/feedback/src/jack && gcc ${CFLAGS} abhang.c -o abhang -lm -ljack) || error "abhang"
 (cd tools/feedback/tools && gcc ${CFLAGS} whitenoise.c -o whitenoise -lm -ljack) || error "whitenoise"
+(cd tools/impairment && gcc ${CFLAGS} thresholdnoise.c -o thresholdnoise -lm -ljack) || error "thresholdnoise"
 
