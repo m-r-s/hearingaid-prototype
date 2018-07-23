@@ -20,8 +20,8 @@ echo ""
 echo "killall thresholdnoise"
 killall thresholdnoise -9 &> /dev/null
 
-echo "killall whitenoise"
-killall whitenoise -9 &> /dev/null
+echo "killall pink noise"
+killall pinknoise -9 &> /dev/null
 
 echo "killall abhang"
 killall abhang -9 &> /dev/null
@@ -38,20 +38,22 @@ echo "start jackd"
 taskset -c 1 jackd --realtime -d alsa -d hw:$SOUNDDEVICE,$SOUNDSTREAM -p $FRAGSIZE -r $SAMPLERATE -n $NPERIODS -s 2>&1 | sed 's/^/[JACKD] /' &
 sleep 2
 
-echo "start white noise"
-(cd tools/feedback/tools && ./whitenoise) 2>&1 &
+echo "start pink noise"
+(cd tools/signals && ./pinknoise) 2>&1 &
 sleep 0.1
-jack_connect whitenoise:output_1 system:playback_2
-jack_connect whitenoise:output_2 system:playback_1
+jack_connect pinknoise:output_1 system:playback_2
+jack_connect pinknoise:output_2 system:playback_1
 
 echo "record feedback"
-jack_rec -f "/tmp/feedback.wav" -d 10 -b 32 whitenoise:output_1 whitenoise:output_2 system:capture_1 system:capture_2
+jack_rec -f "/tmp/feedback.wav" -d 10 -b 32 pinknoise:output_1 pinknoise:output_2 system:capture_1 system:capture_2
 
-echo "stop white noise"
-killall whitenoise -9 &> /dev/null
+echo "stop pink noise"
+killall pinknoise -9 &> /dev/null
+
+exit 1
 
 echo "calculate feedback path"
-(cd tools/feedback/tools && nice ./update_configuration.m)
+(cd tools/feedback && nice ./update_configuration.m)
 
 echo "start static feedback cancelation"
 (cd tools/feedback/src/jack && taskset -c 2 ./abhang) 2>&1 &

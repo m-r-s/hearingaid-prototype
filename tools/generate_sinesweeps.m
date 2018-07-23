@@ -1,11 +1,11 @@
 #!/usr/bin/octave -q
 
 fs = 48000; % Hz
-duration = 5; % seconds
+duration = 2; % seconds
 levels = [-80 -70 -60 -50 -40 -30 -20 -10 -0.1]; % dB FS
 
-freq_start = 100; % Hz
-freq_stop = 8000; % Hz
+freq_start = 50; % Hz
+freq_stop = 20000; % Hz
 
 phase_diff_start = 2.*pi.*freq_start./fs;
 phase_diff_stop = 2.*pi.*freq_stop./fs;
