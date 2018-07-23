@@ -50,8 +50,6 @@ jack_rec -f "/tmp/feedback.wav" -d 10 -b 32 pinknoise:output_1 pinknoise:output_
 echo "stop pink noise"
 killall pinknoise -9 &> /dev/null
 
-exit 1
-
 echo "calculate feedback path"
 (cd tools/feedback && nice ./update_configuration.m)
 

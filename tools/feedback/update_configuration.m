@@ -10,7 +10,7 @@ fs = 48000;
 assert(fs==48000);
 signal = signal(1000:end-1000,:);
 num_samples = size(signal,1);
-  
+
 max_samples = 20*48; % ~20 ms
 max_range = 3*48; % ~3 ms
 min_freq = fs./max_samples;
@@ -23,13 +23,13 @@ fft_samples = 2.^nextpow2(2.*analysis_samples);
 % Use only single precision
 signal = single(signal);
 
-% Unsegmented reference implementation 
-signal_fft = fft(signal);
-signal_fft(1:1+round(min_freq./fs.*size(signal,1)),3:4) = 0;
-signal_fft(1+end-round(min_freq./fs.*size(signal,1)):end,3:4) = 0;
-H = signal_fft(:,[3,4])./signal_fft(:,[1,2]);
-feedback_ref = real(ifft(H));
-feedback_ref_short = feedback_ref(1:max_samples,:);
+%% Unsegmented reference implementation
+%signal_fft = fft(signal);
+%signal_fft(1:1+round(min_freq./fs.*size(signal,1)),3:4) = 0;
+%signal_fft(1+end-round(min_freq./fs.*size(signal,1)):end,3:4) = 0;
+%H = signal_fft(:,[3,4])./signal_fft(:,[1,2]);
+%feedback_ref = real(ifft(H));
+%feedback_ref_short = feedback_ref(1:max_samples,:);
 
 % Calculate feedback paths for each segment
 feedback_left_fft = zeros(num_frames,fft_samples./2+1,'single');
@@ -57,27 +57,27 @@ feedback_right_median = real_ifft(feedback_right_fft_median(:));
 feedback_left_median_short = feedback_left_median(1:max_samples);
 feedback_right_median_short = feedback_right_median(1:max_samples);
 
-% A variant using the mean instead of the median values
-feedback_left_fft_mean = mean(feedback_left_fft);
-feedback_right_fft_mean = mean(feedback_right_fft);
-feedback_left_fft_mean(1:1+round(min_freq./fs.*fft_samples)) = 0;
-feedback_right_fft_mean(1:1+round(min_freq./fs.*fft_samples)) = 0;
-feedback_left_mean = real_ifft(feedback_left_fft_mean(:));
-feedback_right_mean = real_ifft(feedback_right_fft_mean(:));
-feedback_left_mean = feedback_left_mean(1:max_samples);
-feedback_right_mean = feedback_right_mean(1:max_samples);
+%% A variant using the mean instead of the median values
+%feedback_left_fft_mean = mean(feedback_left_fft);
+%feedback_right_fft_mean = mean(feedback_right_fft);
+%feedback_left_fft_mean(1:1+round(min_freq./fs.*fft_samples)) = 0;
+%feedback_right_fft_mean(1:1+round(min_freq./fs.*fft_samples)) = 0;
+%feedback_left_mean = real_ifft(feedback_left_fft_mean(:));
+%feedback_right_mean = real_ifft(feedback_right_fft_mean(:));
+%feedback_left_mean = feedback_left_mean(1:max_samples);
+%feedback_right_mean = feedback_right_mean(1:max_samples);
 
-figure;
-subplot(2,1,1);
-plot(feedback_ref_short(:,1),'k','LineWidth',2);
-hold on;
-plot(feedback_left_mean,'LineWidth',2);
-plot(feedback_left_median_short,'LineWidth',2);
-subplot(2,1,2);
-plot(feedback_ref_short(:,2),'k','LineWidth',2);
-hold on;
-plot(feedback_right_mean,'LineWidth',2);
-plot(feedback_right_median_short,'LineWidth',2);
+%figure;
+%subplot(2,1,1);
+%plot(feedback_ref_short(:,1),'k','LineWidth',2);
+%hold on;
+%plot(feedback_left_mean,'LineWidth',2);
+%plot(feedback_left_median_short,'LineWidth',2);
+%subplot(2,1,2);
+%plot(feedback_ref_short(:,2),'k','LineWidth',2);
+%hold on;
+%plot(feedback_right_mean,'LineWidth',2);
+%plot(feedback_right_median_short,'LineWidth',2);
 
 % Function to dynamically select the window that covers the most energy
 function range = selectmain(in,level)
