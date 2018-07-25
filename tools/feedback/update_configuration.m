@@ -66,7 +66,8 @@ feedback_right_median_short = feedback_right_median(1:max_samples);
 %feedback_right_mean = real_ifft(feedback_right_fft_mean(:));
 %feedback_left_mean = feedback_left_mean(1:max_samples);
 %feedback_right_mean = feedback_right_mean(1:max_samples);
-
+%
+%% Figure to compare unsegmented, median, and mean implementation
 %figure;
 %subplot(2,1,1);
 %plot(feedback_ref_short(:,1),'k','LineWidth',2);
@@ -131,5 +132,45 @@ fclose(fp);
 
 printf("latency1 = %.2fms\nlatency2 = %.2fms\n",(maxidx1-1).*1000./fs,(maxidx1-1).*1000./fs);
 printf("range1 = [%i %i]\nrange2 = [%i %i]\n",range1(1),range1(2),range2(1),range2(2));
-
 printf('done\n');
+
+%%% Figures
+%feedback = [feedback1,feedback2];
+%feedback_fft = fft(feedback);
+%max_amplitude = max(abs(feedback(:)));
+%range = [range1;range2];
+%audiowrite('feedback_impulseresponse.wav',feedback(1:max_samples,:),fs,'BitsPerSample',32);
+%figure('Position',[0 0 600 600],'Visible','on');
+%set(gcf,'PaperUnits','inches','PaperPosition',[0 0 6 6].*1.4);
+%for i=1:2
+%  subplot(2,2,i);
+%  [fb_max_amp, fb_max_timeidx] = max(abs(feedback(:,i)))
+%  h = plot((0:max_samples-1)./fs.*1000,feedback(:,i)./max_amplitude,'color',[1 1 1].*0.67);
+%  hold on;
+%  plot(((range(i,1):range(i,2))-1)./fs.*1000,feedback(range(i,1):range(i,2),i)./max_amplitude,'k');
+%  text((fb_max_timeidx-1)./fs.*1000,-1,sprintf('%.1fms',(fb_max_timeidx-1)./fs.*1000),'HorizontalAlignment','center', 'VerticalAlignment', 'bottom');
+%  xlim([0 10]);
+%  ylim([-1.2 1.2]);
+%  xlabel('Latency / ms');
+%  ylabel(sprintf('Amplitude / *%.3E',max_amplitude));
+%  set(gca,'XTick',0:1:10);
+%  legend(h,{sprintf('channel %i',i)});
+%end
+%for i=1:2
+%  subplot(2,2,i+2);
+%  spectrum = 20*log10(abs(feedback_fft(:,i)));
+%  [fb_max_gain, fb_max_freqidx] = max(spectrum);
+%  freqs = linspace(0,fs-1,length(spectrum));
+%  h = plot(log(freqs),spectrum,'k');
+%  text(log(freqs(fb_max_freqidx)),fb_max_gain,sprintf('%.1fdB @ %.0fHz',fb_max_gain,freqs(fb_max_freqidx)),'HorizontalAlignment','center', 'VerticalAlignment', 'bottom');
+%  ylim([-80 0]);
+%  xlim(log([100 16000]));
+%  xlabel('Frequency / Hz');
+%  ylabel('Amplitude / dB');
+%  set(gca,'XTick',log([125 250 500 1000 2000 4000 8000 16000]));
+%  set(gca,'XTicklabel',[125 250 500 1000 2000 4000 8000 16000]);
+%  legend(h,{sprintf('channel %i',i)});
+%end
+%print('-depsc2','-r300','feedback.eps');
+
+
