@@ -8,17 +8,9 @@ SAMPLERATE=48000
 FRAGSIZE=48
 NPERIODS=2
 
-# MHA config
-MHACONFIG="openMHA.cfg"
-MHAIP=127.0.0.1
-MHAPORT=33337
-
 echo ""
-echo "OPENMHA EXAMPLE FOR HEARING AID PROTOTYPE"
+echo "MEASURE FEEDBACK (CANCELLATION) WITH HEARING AID PROTOTYPE"
 echo ""
-
-echo "killall thresholdnoise"
-killall thresholdnoise -9 &> /dev/null
 
 echo "killall pink noise"
 killall pinknoise -9 &> /dev/null
@@ -41,6 +33,7 @@ sleep 2
 echo "start pink noise"
 (cd tools/signals && ./pinknoise) 2>&1 &
 sleep 0.5
+
 jack_connect pinknoise:output_1 system:playback_2
 jack_connect pinknoise:output_2 system:playback_1
 
@@ -57,30 +50,33 @@ echo "start static feedback cancelation"
 (cd tools/abhang/src/jack && taskset -c 2 ./abhang) 2>&1 &
 sleep 1
 
-#echo "start thresholdnoise"
-#(cd tools/impairment && taskset -c 2 ./thresholdnoise) 2>&1 &
-#sleep 1
-
-echo "start mha"
-taskset -c 3 mha --interface=$MHAIP --port=$MHAPORT "?read:${MHACONFIG}" 2>&1 | sed 's/^/[MHA] /' &
-sleep 1
-
 # Connections
 echo "Wireing..."
 jack_connect system:capture_1 abhang:input_1
 jack_connect system:capture_2 abhang:input_2
-jack_connect MHA:out_1 abhang:input_3
-jack_connect MHA:out_2 abhang:input_4
-#jack_connect thresholdnoise:output_1 abhang:input_3
-#jack_connect thresholdnoise:output_2 abhang:input_4
-jack_connect abhang:output_1 MHA:in_1
-jack_connect abhang:output_2 MHA:in_2
-jack_connect MHA:out_1 system:playback_2
-jack_connect MHA:out_2 system:playback_1
-#jack_connect thresholdnoise:output_1 system:playback_2
-#jack_connect thresholdnoise:output_2 system:playback_1
 echo "RUNNING!"
 
-echo "Start control..."
-(cd tools/control && taskset -c 0 ./actions.sh) 2>&1 &
+# Measure compensated feedback in loop
+COUNT=0
+while true; do
+  COUNT=$[$COUNT+1]
+  echo "start pink noise"
+  (cd tools/signals && ./pinknoise) 2>&1 &
+  sleep 0.5
+
+  jack_connect pinknoise:output_1 abhang:input_3
+  jack_connect pinknoise:output_1 system:playback_2
+  jack_connect pinknoise:output_2 abhang:input_4
+  jack_connect pinknoise:output_2 system:playback_1
+
+  echo "record feedback"
+  jack_rec -f "/tmp/feedback_${COUNT}.wav" -d 10 -b 32 pinknoise:output_1 pinknoise:output_2 abhang:output_1 abhang:output_2
+  
+  echo "stop pink noise"
+  killall pinknoise -9 &> /dev/null
+
+  sleep 10
+done
+
+
 
