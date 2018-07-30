@@ -14,4 +14,5 @@ error() {
 (cd tools/signals && gcc ${CFLAGS} whitenoise.c -o whitenoise -lm -ljack) || error "whitenoise"
 (cd tools/signals && gcc ${CFLAGS} sweep.c -o sweep -lm -ljack) || error "sweep"
 (cd tools/signals && gcc ${CFLAGS} pinknoise.c -o pinknoise -lm -ljack) || error "pinknoise"
+(cd tools/signals && gcc ${CFLAGS} thresholdnoise.c -o thresholdnoise -lm -ljack) || error "thresholdnoise"
 

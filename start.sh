@@ -17,6 +17,9 @@ echo ""
 echo "OPENMHA EXAMPLE FOR HEARING AID PROTOTYPE"
 echo ""
 
+echo "killall actions.sh"
+killall actions.sh -9 &> /dev/null
+
 echo "killall thresholdnoise"
 killall thresholdnoise -9 &> /dev/null
 
@@ -38,49 +41,20 @@ echo "start jackd"
 taskset -c 1 jackd --realtime -d alsa -d hw:$SOUNDDEVICE,$SOUNDSTREAM -p $FRAGSIZE -r $SAMPLERATE -n $NPERIODS -s 2>&1 | sed 's/^/[JACKD] /' &
 sleep 2
 
-echo "start pink noise"
-(cd tools/signals && ./pinknoise) 2>&1 &
-sleep 0.5
-jack_connect pinknoise:output_1 system:playback_2
-jack_connect pinknoise:output_2 system:playback_1
-
-echo "record feedback"
-jack_rec -f "/tmp/feedback.wav" -d 10 -b 32 pinknoise:output_1 pinknoise:output_2 system:capture_1 system:capture_2
-
-echo "stop pink noise"
-killall pinknoise -9 &> /dev/null
-
-echo "calculate feedback path"
-(cd tools/ && taskset -c 0 nice ./update_abhang_configuration.m)
-
-echo "start static feedback cancelation"
-(cd tools/abhang/src/jack && taskset -c 2 ./abhang) 2>&1 &
-sleep 1
-
-#echo "start thresholdnoise"
-#(cd tools/impairment && taskset -c 2 ./thresholdnoise) 2>&1 &
-#sleep 1
+echo "start threshold noise"
+(cd tools/signals && ./thresholdnoise) 2>&1 &
 
 echo "start mha"
 taskset -c 3 mha --interface=$MHAIP --port=$MHAPORT "?read:${MHACONFIG}" 2>&1 | sed 's/^/[MHA] /' &
-sleep 1
 
-# Connections
-echo "Wireing..."
-jack_connect system:capture_1 abhang:input_1
-jack_connect system:capture_2 abhang:input_2
-jack_connect MHA:out_1 abhang:input_3
-jack_connect MHA:out_2 abhang:input_4
-#jack_connect thresholdnoise:output_1 abhang:input_3
-#jack_connect thresholdnoise:output_2 abhang:input_4
-jack_connect abhang:output_1 MHA:in_1
-jack_connect abhang:output_2 MHA:in_2
+echo "inital feedback measurement"
+./init_feedbackcancellation.sh 5
+
+echo "connect mha"
 jack_connect MHA:out_1 system:playback_2
 jack_connect MHA:out_2 system:playback_1
-#jack_connect thresholdnoise:output_1 system:playback_2
-#jack_connect thresholdnoise:output_2 system:playback_1
-echo "RUNNING!"
 
-echo "Start control..."
+echo "start bluetooth control"
 (cd tools/control && taskset -c 0 ./actions.sh) 2>&1 &
 
+echo "RUNNING!"
