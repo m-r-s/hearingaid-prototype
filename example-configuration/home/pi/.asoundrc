@@ -1,0 +1,24 @@
+pcm.rawjack {
+    type jack
+    playback_ports {
+        0 MHA:in_1
+        1 MHA:in_2
+    }
+    capture_ports {
+        0 abhang:output_1
+        1 abhang:output_2
+    }
+}
+
+pcm.jack {
+    type plug
+    slave { pcm "rawjack" }
+    hint {
+        description "JACK Audio Connection Kit"
+    }
+}
+
+pcm.!default {
+    type plug
+    slave { pcm "rawjack" }
+}
