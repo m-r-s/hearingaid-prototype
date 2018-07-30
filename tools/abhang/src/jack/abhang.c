@@ -9,8 +9,6 @@
 #include "variables.h"
 #include "feedback.c"
 
-#define DEBUG 1
-
 jack_port_t *input_port1, *input_port2, *input_port3, *input_port4;
 jack_port_t *output_port1, *output_port2;
 jack_client_t *client;

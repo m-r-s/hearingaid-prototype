@@ -26,7 +26,8 @@ echo "calculate feedback path"
 echo "start static feedback cancelation"
 (cd "${DIR}/tools/abhang/src/jack" && taskset -c 2 ./abhang) 2>&1 &
 
-sleep 0.5
+sleep 1
+
 echo "connect abhang"
 jack_connect system:capture_1 abhang:input_1
 jack_connect system:capture_2 abhang:input_2

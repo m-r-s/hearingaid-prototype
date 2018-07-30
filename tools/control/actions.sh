@@ -86,7 +86,7 @@ while true; do
       case "${line: -8}" in
       "01000100")
         echo "A"
-        action_no_amplification_no
+        action_no_amplification
       ;;
       "01000101")
         echo "B"
