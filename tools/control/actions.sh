@@ -4,7 +4,9 @@ function text2speech () {
   echo "text2speech: '$1'"
   local FILE=$(mktemp -p /dev/shm)
   flite -t "$1" "$FILE"
-  aplay -D 'jack' "$FILE"
+  # aplay -D 'jack' "$FILE"
+  mhacmd "mha.transducers.mhachain.addsndfile.filename = $FILE"
+  sleep 0.1
   rm "$FILE"
 }
 
@@ -12,6 +14,7 @@ function mhacmd {
   echo "mhacmd: '$1'"
   echo "$1" | nc 127.0.0.1 33337 | grep -m1 -E "\(MHA:[^)]+\)" | grep success
 }
+
 
 while true; do
   if [ -e "/dev/input/js0" ]; then
@@ -21,17 +24,17 @@ while true; do
       "01000100")
         echo "A"
         text2speech "Output off"
-        mhacmd "mha.transducers.altplugs.select = (none)"
+        mhacmd "mha.transducers.mhachain.altplugs.select = (none)"
       ;;
       "01000101")
         echo "B"
         text2speech "Off"
-        mhacmd "mha.transducers.altplugs.select = identity"
+        mhacmd "mha.transducers.mhachain.altplugs.select = identity"
       ;;
       "01000103")
         echo "X"
         text2speech "On"
-        mhacmd "mha.transducers.altplugs.select = dynamiccompression"
+        mhacmd "mha.transducers.mhachain.altplugs.select = dynamiccompression"
       ;;
       "01000104")
         echo "Y"
