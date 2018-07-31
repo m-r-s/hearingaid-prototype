@@ -1,6 +1,6 @@
 export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/dbus/system_bus_socket
 
-PATH=$PATH:~/njconnect-1.5:~/openMHA/bin
+PATH=$PATH:~/njconnect-1.5:~/openMHA/bin:~/hearingaid-prototype
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/openMHA/lib
 
 # Autostart after 5 seconds
