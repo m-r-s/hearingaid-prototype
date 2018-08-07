@@ -1,4 +1,19 @@
-function playwavfile(filename, ear, device)
+function playwavfile(filename, ear, device, blocking)
+  
+  persistent player;
+  
+  if nargin < 2
+    ear = 'b';
+  end
+  
+  if nargin < 3
+    device = 'system';
+  end
+  
+  if nargin < 4
+    blocking = 1;
+  end
+  
   % Get audio data
   [signal, fs] = audioread(filename);
   if isempty(signal)
@@ -33,7 +48,8 @@ function playwavfile(filename, ear, device)
   signal = [signal; zeros(round(0.2.*fs),2)];
   player = audioplayer(signal, fs, 24, playdev);
   play(player);
-  pause(size(signal,1)./fs);
-  stop(player);
-  pause(0.1);
+  if blocking
+    pause(size(signal,1)./fs);
+    stop(player);
+  end
 end

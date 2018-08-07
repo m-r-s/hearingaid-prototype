@@ -5,7 +5,7 @@ clc
 
 fs = 48000;
 
-[signal, fs] = audioread('/tmp/feedback.wav');
+[signal, fs] = audioread('/dev/shm/feedback.wav');
 assert(fs==48000);
 
 [feedback, range] = estimate_feedback(signal, fs);

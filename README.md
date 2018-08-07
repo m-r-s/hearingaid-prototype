@@ -34,6 +34,7 @@ Hardware:
 * Raspberry Pi 3 model B
 * Low-latency sound card
 * USB power bank
+* Bluetooth remote control
 
 Software:
 * [openMHA](http://www.openmha.org)
@@ -55,9 +56,12 @@ Software:
 
 ## Some cool features
 * Pre-configured SD-card image (~500 Mb) available for download!
+* Pre-calibrated for most "transparent" acoustic impression
 * Autostart in about 10 seconds
 * Several hours of autonomy
+* Controllable via Bluetooth remote
 * Connect via wifi to the hearing aid prototype
+* Simulate impaired hearing
 * Fit it to a specific hearing profile using openMHA's graphical fitting interface
 * Extend openMHA with own algorithms
 * Combine it with any jack-based software (play, process, or record)
