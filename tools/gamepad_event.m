@@ -65,7 +65,7 @@ if fid > 0
         event = 'HORIZONTAL min';
       otherwise
         %keycode
-      end
+    end
   end
 end
 end

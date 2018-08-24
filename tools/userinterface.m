@@ -31,7 +31,7 @@ function userinterface()
         
       case 'B pressed'
         if ~isempty(freqs)
-          fitting(freqs, thresholds_left, thresholds_right, 'factor');
+          fitting(freqs, thresholds_left, thresholds_right, 'marginfactor');
         else
           defaultfitting('B');
         end
@@ -164,8 +164,8 @@ end
 function fitting(freqs, thresholds_left, thresholds_right, action)
   persistent state;
   
-  offsets = [20 30 40];
-  factors = [0.6 0.8 1.0];
+  offsets = [-10 0 10];
+  marginfactors = [0 0.33 0.66];
   rolloffs = 1+[1/8 1/4 1/2];
   
   switch action
@@ -174,10 +174,10 @@ function fitting(freqs, thresholds_left, thresholds_right, action)
       if state.offset > length(offsets)
         state.offset = 1;
       end
-    case 'factor'
-      state.factor = state.factor + 1;
-      if state.factor > length(factors)
-        state.factor = 1;
+    case 'marginfactor'
+      state.marginfactor = state.marginfactor + 1;
+      if state.marginfactor > length(marginfactors)
+        state.marginfactor = 1;
       end
     case 'rolloff'
       state.rolloff = state.rolloff + 1;
@@ -186,15 +186,13 @@ function fitting(freqs, thresholds_left, thresholds_right, action)
       end  
     case 'initial'
       state.offset = 2;
-      state.factor = 2;
+      state.marginfactor = 2;
       state.rolloff = 2;
   end
-  offset =  offsets(state.offset);
-  factor = factors(state.factor);
-  rolloff = rolloffs(state.rolloff);
-  tic
-  gt_data = prescription_minimalistic(freqs, thresholds_left, thresholds_right, offset, factor, rolloff);
-  toc
+  offset = offsets(state.offset)
+  marginfactor = marginfactors(state.marginfactor)
+  rolloff = rolloffs(state.rolloff)
+  [gt_data, gt_freqs, gt_levels] = prescription_minimalistic(freqs, thresholds_left, thresholds_right, offset, marginfactor, rolloff);
   writegaintable('/dev/shm/tmp_gaintable.cfg', gt_data);
   mhacontrol(['mha.transducers.mhachain.altplugs.dynamiccompression.mhachain.dc?read:/dev/shm/tmp_gaintable.cfg']);
 end
