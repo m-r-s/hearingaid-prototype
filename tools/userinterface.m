@@ -93,8 +93,11 @@ function userinterface()
           text2speech "Individualization menu: A) Fitting, X) Reset, Y) Test sound, B) Return.";    
           switch gamepad_event()
             case 'A'
-              while ~strcmp(gamepad_event(),'START')
+              while true
                 text2speech "Measure hearing thresholds: A) Tone, X) No tone, B) Abort. Press Start button!";
+                if strcmp(gamepad_event(),'START')
+                  break;
+                end
               end  
               mhacontrol "mha.transducers.mhachain.altplugs.select = identitiy";
               freqs = [500 1000 2000 4000];
@@ -108,8 +111,11 @@ function userinterface()
                 mkdir('../fittings/individual');
                 save('../fittings/individual/status.mat','freqs','thresholds_left','thresholds_right');
                 fitting(freqs, thresholds_left, thresholds_right, 'initial');
-                while ~strcmp(gamepad_event(),'START')
+                while true
                   text2speech(['Your thresholds on the left are: ',sprintf('%.0f ',thresholds_left),', and your thresholds on the left are: ',sprintf('%.0f ',thresholds_right),'. Press Start button!']);
+                  if strcmp(gamepad_event(),'START')
+                    break;
+                  end
                 end
               end
             case 'X'
@@ -136,8 +142,11 @@ function userinterface()
               text2speech "Main menu!";
               break
             case 'Y'
-              while ~strcmp(gamepad_event(),'START')
+              while true
                 text2speech "Caution: Will start test sound and return to main menu. Press Start button!";
+                if strcmp(gamepad_event(),'START')
+                  break;
+                end
               end
               filename = '../recordings/testsound.wav';
               playwavfile(filename, 'b', 'MHA', 0);
