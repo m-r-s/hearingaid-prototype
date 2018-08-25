@@ -22,13 +22,13 @@ function threshold = measure_sweep(frequency, ear)
     presentstimulus(1, startvalue_corrected);
     while validanswer == 0
       switch gamepad_event()
-        case 'A pressed'
+        case 'A'
           validanswer = 1;
           answer = 1;
-        case 'X pressed'
+        case 'X'
           validanswer = 1;
           answer = 0;
-        case 'B pressed'
+        case 'B'
           validanswer = 1;
           answer = [];
           return
@@ -88,13 +88,13 @@ function answer = getanswer(count)
   validanswer = 0;
   while validanswer == 0
     switch gamepad_event();
-      case 'A pressed'
+      case 'A'
         validanswer = 1;
         answer = 1;
-      case 'X pressed'
+      case 'X'
         validanswer = 1;
         answer = 0;
-      case {'B pressed'}
+      case {'B'}
         validanswer = 1;
         answer = [];
     end

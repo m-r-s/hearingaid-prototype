@@ -22,78 +22,78 @@ function userinterface()
 
   while true
     switch gamepad_event()
-      case 'A pressed'
+      case 'A'
         if ~isempty(freqs)
           fitting(freqs, thresholds_left, thresholds_right, 'offset');
         else
           defaultfitting('A');
         end
-        
-      case 'B pressed'
+
+      case 'B'
         if ~isempty(freqs)
           fitting(freqs, thresholds_left, thresholds_right, 'marginfactor');
         else
           defaultfitting('B');
         end
-        
-      case 'X pressed'
+
+      case 'X'
         if ~isempty(freqs)
           fitting(freqs, thresholds_left, thresholds_right, 'rolloff');
         else
           defaultfitting('X');
         end
-        
-      case 'Y pressed'
+
+      case 'Y'
         text2speech("Recording 10 seconds");
         record('10');
-        
-      case 'START pressed'
+
+      case 'START'
         validanswer = 0;
         while validanswer == 0
-          text2speech "Power off! A) Confirm, B) Cancel.";        
+          text2speech "Power off! A) Confirm, B) Cancel.";
           switch gamepad_event();
-            case 'A pressed'
+            case 'A'
               validanswer = 1;
               text2speech "Confirmed!";
-              pause(2);        
+              pause(2);
               system "sudo poweroff";
-            case 'B pressed'
+            case 'B'
               validanswer = 1;
-              text2speech "Cancelled!";        
+              text2speech "Cancelled!";
           end
         end
-      
-      case 'SELECT pressed'
+
+      case 'SELECT'
         text2speech "Mute!";
         mhacontrol "mha.transducers.mhachain.altplugs.select = (none)";
-        
+
       case 'VERTICAL max'
         text2speech "Amplification on!";
         mhacontrol "mha.transducers.mhachain.altplugs.select = dynamiccompression";
-        
+
       case 'VERTICAL min'
         text2speech "Amplification off!";
         mhacontrol "mha.transducers.mhachain.altplugs.select = identity";
-        
+
       case 'HORIZONTAL max'
         text2speech "Noise on!";
         thresholdnoise "on"; 
-        
+
       case 'HORIZONTAL min'
         text2speech "Noise off!";
         thresholdnoise "off"; 
-        
-      case 'RT pressed'
+
+      case 'RT'
         text2speech "Measure feedback!";
         pause(1);
         feedback "3";
 
-      case 'LT pressed'
+      case 'LT'
         while true
           text2speech "Individualization menu: A) Fitting, X) Reset, Y) Test sound, B) Return.";    
           switch gamepad_event()
-            case 'A pressed'
-              while ~strcmp(gamepad_event(),'START pressed')
+            case 'A'
+              while ~strcmp(gamepad_event(),'START')
                 text2speech "Measure hearing thresholds: A) Tone, X) No tone, B) Abort. Press Start button!";
               end  
               mhacontrol "mha.transducers.mhachain.altplugs.select = identitiy";
@@ -108,16 +108,16 @@ function userinterface()
                 mkdir('../fittings/individual');
                 save('../fittings/individual/status.mat','freqs','thresholds_left','thresholds_right');
                 fitting(freqs, thresholds_left, thresholds_right, 'initial');
-                while ~strcmp(gamepad_event(),'START pressed')
+                while ~strcmp(gamepad_event(),'START')
                   text2speech(['Your thresholds on the left are: ',sprintf('%.0f ',thresholds_left),', and your thresholds on the left are: ',sprintf('%.0f ',thresholds_right),'. Press Start button!']);
                 end
               end
-            case 'X pressed'
+            case 'X'
               validanswer = 0;
               while validanswer == 0
                 text2speech "Reset individualization! A) Confirm, B) Cancel.";        
                 switch gamepad_event();
-                  case 'A pressed'
+                  case 'A'
                     validanswer = 1;
                     text2speech "Confirmed!";
                     pause(2);        
@@ -126,17 +126,17 @@ function userinterface()
                     thresholds_left = [];
                     thresholds_right = [];
                     defaultfitting('A');
-                  case 'B pressed'
+                  case 'B'
                     validanswer = 1;
                     text2speech "Cancelled!";
                     pause(1);
                 end
               end
-            case 'B pressed'
+            case 'B'
               text2speech "Main menu!";
               break
-            case 'Y pressed'
-              while ~strcmp(gamepad_event(),'START pressed')
+            case 'Y'
+              while ~strcmp(gamepad_event(),'START')
                 text2speech "Caution: Will start test sound and return to main menu. Press Start button!";
               end
               filename = '../recordings/testsound.wav';

@@ -35,6 +35,9 @@ killall jackd -9 &> /dev/null
 echo "killall commander.sh"
 killall commander.sh -9 &> /dev/null
 
+echo "killall octave-cli"
+killall octave-cli -9 &> /dev/null
+
 sleep 1
 
 echo "start jackd"
@@ -60,8 +63,5 @@ jack_connect MHA:out_2 system:playback_1
 
 echo "initial commands"
 echo feedback 3 > commandqueue
-echo text2speech "start user interface" > commandqueue
 
-echo "start user interface"
-(cd tools && octave-cli userinterface.m)
-
+(cd tools && octave-cli --eval "userinterface")
