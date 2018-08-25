@@ -31,14 +31,14 @@ function userinterface()
 
       case 'B'
         if ~isempty(freqs)
-          fitting(freqs, thresholds_left, thresholds_right, 'marginfactor');
+          fitting(freqs, thresholds_left, thresholds_right, 'rolloff');
         else
           defaultfitting('B');
         end
 
       case 'X'
         if ~isempty(freqs)
-          fitting(freqs, thresholds_left, thresholds_right, 'rolloff');
+          fitting(freqs, thresholds_left, thresholds_right, 'marginfactor');
         else
           defaultfitting('X');
         end
