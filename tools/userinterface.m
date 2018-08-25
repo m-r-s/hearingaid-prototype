@@ -7,7 +7,7 @@ function userinterface()
   end
 
   if exist('../fittings/individual/status.mat','file');
-    individualization = load('../fittings/individual/status.mat')
+    individualization = load('../fittings/individual/status.mat');
     freqs = individualization.freqs;
     thresholds_left = individualization.thresholds_left;
     thresholds_right = individualization.thresholds_right;
@@ -137,10 +137,11 @@ function userinterface()
               break
             case 'Y pressed'
               while ~strcmp(gamepad_event(),'START pressed')
-                text2speech "Caution: Will start test sound. Press Start button!";
+                text2speech "Caution: Will start test sound and return to main menu. Press Start button!";
               end
               filename = '../recordings/testsound.wav';
               playwavfile(filename, 'b', 'MHA', 0);
+              break
           end
         end     
       case ''
@@ -149,7 +150,6 @@ function userinterface()
 end
 
 function defaultfitting(button)
-  % Look for individual gaintables and fall back to default gaintables 
   gaintablefile = dir(['../fittings/default/' button '_*.cfg']);
   if ~isempty(gaintablefile)
     [~, dateidx] = sort(gaintablefile.datenum);
