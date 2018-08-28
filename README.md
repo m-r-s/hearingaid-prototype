@@ -11,7 +11,8 @@ Mailing list: hearingaid-prototypes@lists.uni-oldenburg.de (let me know if you w
 
 
 ## Aims
-The prototype was deliberately designed using affordable consumer hardware and open source software. The aim is to lower the entry barrier for hearing aid development and facilitate any interested person to get actively involved in testing and improving hearing devices; empowering power-users.
+The prototype was deliberately designed using affordable consumer hardware and open source software.
+The aim is to lower the entry barrier for hearing aid development and facilitate any interested person to get actively involved in testing and improving hearing devices; empowering power-users.
 
 
 ## Warning and disclaimer
@@ -43,12 +44,13 @@ Software:
 * [hostapd](http://w1.fi/hostapd/)
 * [OpenSSH](https://www.openssh.com/)
 * [GNU/Octave](http://www.octave.org/)
+* [festival-lite](http://www.speech.cs.cmu.edu/flite/)
 
 
 ## Main characteristics
 * Free software: Control is yours, you can change every single bit of it!
 * Efficient real-time implementations of research-approved hearing algorithms (c.f. [openMHA at Github](https://github.com/HoerTech-gGmbH/openMHA))
-* Competitively low delays: Less than 10ms
+* Competitively low delays: Less than 5ms
 * Looks like wearing in-ear headphones
 * Whole setup fits in a belt bag
 * Sum of all components is about 250 €
@@ -57,12 +59,13 @@ Software:
 ## Some cool features
 * Pre-configured SD-card image (~500 Mb) available for download!
 * Pre-calibrated for most "transparent" acoustic impression
-* Autostart in about 10 seconds
+* Autostart on boot
 * Several hours of autonomy
-* Controllable via Bluetooth remote
-* Connect via wifi to the hearing aid prototype
-* Simulate impaired hearing
-* Fit it to a specific hearing profile using openMHA's graphical fitting interface
+* Remote control via Bluetooth game pad
+* Connect via WiFi to the hearing aid prototype
+* Simulate impaired hearing with threshold simulating noise
+* Fit it to your hearing thresholds
+* Fit it to arbitrary hearing profiles using openMHA's graphical fitting interface
 * Extend openMHA with own algorithms
 * Combine it with any jack-based software (play, process, or record)
 
