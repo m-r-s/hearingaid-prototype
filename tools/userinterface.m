@@ -121,7 +121,7 @@ function userinterface()
                 save('../fittings/individual/status.mat','freqs','thresholds_left','thresholds_right');
                 fitting(freqs, thresholds_left, thresholds_right, 'initial');
                 while true
-                  text2speech(['Your thresholds on the left are: ',sprintf('%.0f ',thresholds_left),', and your thresholds on the left are: ',sprintf('%.0f ',thresholds_right),'. Press Start button!']);
+                  text2speech(['Your thresholds on the left are: ',sprintf('%.0f, ',thresholds_left),' and your thresholds on the left are: ',sprintf('%.0f, ',thresholds_right),'. Press Start button!']);
                   if strcmp(gamepad_event(),'START')
                     break;
                   end
