@@ -1,3 +1,4 @@
+#!/usr/bin/octave -q
 % Copyright 2018 Marc René Schädler
 %
 % This file is part of the mobile hearing aid prototype project
@@ -7,7 +8,6 @@
 %
 % You should have received a copy of the GNU General Public License along with the mobile hearing aid prototype project. If not, see http://www.gnu.org/licenses/.
 
-#!/usr/bin/octave -q
 close all
 clear
 clc
