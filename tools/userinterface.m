@@ -124,7 +124,12 @@ function userinterface()
                   text2speech "Fitting sucessful!"
                 end
               else
-                text2speech(['Your thresholds on the left are: ',sprintf('%.0f, ',thresholds_left),' and your thresholds on the left are: ',sprintf('%.0f, ',thresholds_right),'. Press Start button!']);
+                while true
+                  text2speech(['Your thresholds on the left are: ',sprintf('%.0f, ',thresholds_left),' and your thresholds on the left are: ',sprintf('%.0f, ',thresholds_right),'. Press Start button!']);
+                  if strcmp(gamepad_event(),'START')
+                    break;
+                  end
+                end
               end
             case 'X'
               validanswer = 0;
