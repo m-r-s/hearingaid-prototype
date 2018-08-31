@@ -102,30 +102,29 @@ function userinterface()
           text2speech "Individualization menu: A) Fitting, X) Reset, Y) Test sound, B) Return.";    
           switch gamepad_event()
             case 'A'
-              while true
-                text2speech "Measure hearing thresholds: A) Tone, X) No tone, B) Abort. Press Start button!";
-                if strcmp(gamepad_event(),'START')
-                  break;
-                end
-              end  
-              mhacontrol "mha.transducers.mhachain.altplugs.select = identitiy";
-              freqs = [500 1000 2000 4000];
-              thresholds_left = measure_thresholds(freqs, 'l')
-              thresholds_right = measure_thresholds(freqs, 'r')
-              mhacontrol "mha.transducers.mhachain.altplugs.select = dynamiccompression";
-              if any(isnan(thresholds_left)) || any(isnan(thresholds_right))
-                text2speech "Fitting failed!"
-                freqs = [];
-              else
-                mkdir('../fittings/individual');
-                save('../fittings/individual/status.mat','freqs','thresholds_left','thresholds_right');
-                fitting(freqs, thresholds_left, thresholds_right, 'initial');
+              if isempty(freqs)
                 while true
-                  text2speech(['Your thresholds on the left are: ',sprintf('%.0f, ',thresholds_left),' and your thresholds on the left are: ',sprintf('%.0f, ',thresholds_right),'. Press Start button!']);
+                  text2speech "Measure hearing thresholds: A) Tone, X) No tone, B) Abort. Press Start button!";
                   if strcmp(gamepad_event(),'START')
                     break;
                   end
+                end  
+                mhacontrol "mha.transducers.mhachain.altplugs.select = identitiy";
+                freqs = [500 1000 2000 4000];
+                thresholds_left = measure_thresholds(freqs, 'l')
+                thresholds_right = measure_thresholds(freqs, 'r')
+                mhacontrol "mha.transducers.mhachain.altplugs.select = dynamiccompression";
+                if any(isnan(thresholds_left)) || any(isnan(thresholds_right))
+                  text2speech "Fitting failed!"
+                  freqs = [];
+                else
+                  mkdir('../fittings/individual');
+                  save('../fittings/individual/status.mat','freqs','thresholds_left','thresholds_right');
+                  fitting(freqs, thresholds_left, thresholds_right, 'initial');
+                  text2speech "Fitting sucessful!"
                 end
+              else
+                text2speech(['Your thresholds on the left are: ',sprintf('%.0f, ',thresholds_left),' and your thresholds on the left are: ',sprintf('%.0f, ',thresholds_right),'. Press Start button!']);
               end
             case 'X'
               validanswer = 0;
