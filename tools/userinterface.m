@@ -9,7 +9,7 @@
 
 function userinterface()
 
-  [status, VERSION] = system('cd "$HOME/hearingaid-prototype" && git describe --abbrev=4');
+  [status, VERSION] = system('cd .. && git describe --abbrev=4')
 
   if status ~= 0
     VERSION = 'unknown';
@@ -216,25 +216,25 @@ function fitting(freqs, thresholds_left, thresholds_right, action)
 end
 
 function text2speech(message)
-  system(['echo text2speech "',message,'" > ~/hearingaid-prototype/commandqueue']);
+  system(['echo text2speech "',message,'" > ../commandqueue']);
 end
 
 function mhacontrol(command)
-  system(['echo mhacontrol "',command,'" > ~/hearingaid-prototype/commandqueue']);
+  system(['echo mhacontrol "',command,'" > ../commandqueue']);
 end
 
 function mhaplay(filename, mode, level, loop)
-  system(['echo mhaplay "',filename,'" "',mode,'" "',level,'" "',loop,'" > ~/hearingaid-prototype/commandqueue']);
+  system(['echo mhaplay "',filename,'" "',mode,'" "',level,'" "',loop,'" > ../commandqueue']);
 end
 
 function thresholdnoise(status)
-  system(['echo thresholdnoise "',status,'" > ~/hearingaid-prototype/commandqueue']);
+  system(['echo thresholdnoise "',status,'" > ../commandqueue']);
 end
 
 function feedback(duration)
-  system(['echo feedback "',duration,'" > ~/hearingaid-prototype/commandqueue']);
+  system(['echo feedback "',duration,'" > ../commandqueue']);
 end
 
 function record(duration)
-  system(['echo record "',duration,'" > ~/hearingaid-prototype/commandqueue']);
+  system(['echo record "',duration,'" > ../commandqueue']);
 end
