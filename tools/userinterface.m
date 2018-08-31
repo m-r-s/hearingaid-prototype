@@ -86,11 +86,11 @@ function userinterface()
 
       case 'HORIZONTAL max'
         text2speech "Noise on!";
-        thresholdnoise "on"; 
+        thresholdnoise "on";
 
       case 'HORIZONTAL min'
         text2speech "Noise off!";
-        thresholdnoise "off"; 
+        thresholdnoise "off";
 
       case 'RT'
         text2speech "Measure feedback!";
@@ -108,7 +108,7 @@ function userinterface()
                   if strcmp(gamepad_event(),'START')
                     break;
                   end
-                end  
+                end
                 mhacontrol "mha.transducers.mhachain.altplugs.select = identitiy";
                 freqs = [500 1000 2000 4000];
                 thresholds_left = measure_thresholds(freqs, 'l')
@@ -125,7 +125,7 @@ function userinterface()
                 end
               else
                 while true
-                  text2speech(['Your thresholds on the left are: ',sprintf('%.0f, ',thresholds_left),' and your thresholds on the left are: ',sprintf('%.0f, ',thresholds_right),'. Press Start button!']);
+                  text2speech(['Thresholds. Left:',sprintf(' %.0f.',thresholds_left),' Right:',sprintf(' %.0f.',thresholds_right),' Press Start button!']);
                   if strcmp(gamepad_event(),'START')
                     break;
                   end
@@ -165,7 +165,7 @@ function userinterface()
               playwavfile(filename, 'b', 'MHA', 0);
               break
           end
-        end     
+        end
       case ''
     end
   end
