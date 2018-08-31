@@ -8,22 +8,23 @@
 % You should have received a copy of the GNU General Public License along with the mobile hearing aid prototype project. If not, see http://www.gnu.org/licenses/.
 
 function event = gamepad_event()
-persistent fid = [];
+persistent fid;
 device = '/dev/input/js0';
 
-if isempty(fid) || fid < 0 || feof(fid) || ferror(fid)
-  if ~isempty(fid) && fid > 0
+event = [];
+while isempty(event)
+  if isempty(fid)
+    while ~(exist(device,'file') == 2)
+      pause(1);
+    end
+    fid = fopen(device,'rb');
+  end
+  if fid < 0
+    fid = [];
+  elseif feof(fid) || ferror(fid)
     fclose(fid);
     fid = [];
-  end
-  while ~(exist(device,'file') == 2)
-    pause(1);
-  end
-  fid = fopen(device,'rb');
-end
-event = [];
-if fid > 0
-  while isempty(event)
+  else
     keycode = fread(fid,8,'char').';
     if ~isempty(keycode)
       switch keycode(5:end)
