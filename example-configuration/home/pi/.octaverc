@@ -1,2 +1,4 @@
 more off;
 pkg load signal;
+history_save(0);
+crash_dumps_octave_core(0);
