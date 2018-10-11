@@ -3,7 +3,7 @@
 function [max_error_receiv, mean_error_receiv] = Calculation_inversion_receiver(N ,D, mu, srate, f_min, f_max, N_fft)
 
 
-%% Loading impuls responses
+%% Loading impulse responses
 v_HpIR = zeros(8128, 0);
 
 S_tmp = load('impulse_responses\HpTF_A1.mat');
@@ -21,13 +21,15 @@ v_HpIR =[v_HpIR  S_tmp.M_HpIR_r(:,5)  ];
 S_tmp = load('impulse_responses\HpTF_C3.mat');
 v_HpIR =[v_HpIR  S_tmp.M_HpIR_r(:,4)  ];
 
+% Measured impulse responses of six receiver pairs can be found here: https://cs.uol.de/s/KtbD5tkFWRL9bPd
 
-%% Calculation TRCF (for more details see 'Calc_EQfilt_typical')
+
+%% Calculation mean TRCF (Target Response Correction function)
 c_devs = {'A1', 'B1', 'C1', 'C2', 'C3'};
 
 vf_trcf = zeros(N_fft/2+1, 10);
 for dev = 1:5
-    S_tmp = load(['impulse_responses\HRIR_' c_devs{dev} '.mat']);
+    S_tmp = load(['impuls_responses\HRIR_' c_devs{dev} '.mat']);
     % Diffuse-field TRCF, left
     vf_trcf(:,dev    ) = rms( abs(fftR( S_tmp.M_HRIR_open(:,S_tmp.vi_ch_df, 1), N_fft )), 2 ) ./ ...
                          rms( abs(fftR( S_tmp.M_HRIR_mics(:,S_tmp.vi_ch_df, 1), N_fft )), 2 );
@@ -36,11 +38,13 @@ for dev = 1:5
                          rms( abs(fftR( S_tmp.M_HRIR_mics(:,S_tmp.vi_ch_df, 2), N_fft )), 2 );
 end
 
+% HRIR can be found in: https://cs.uol.de/s/KtbD5tkFWRL9bPd
+
 vf_trcf_mean = average_resp(vf_trcf, 2, 'median');
 
 
 %% Preparation filter calculation:
-v_HpIR_mean = average_imp(v_HpIR, 2, 'mean');
+v_HpIR_mean = average_imp(v_HpIR, 2, 'mean');           % Mean of receivers' impulse responses
 vf_HpTF = fftR(v_HpIR_mean, N_fft);
 
 vf_resp_desired = vf_trcf_mean ./ (max( abs(vf_HpTF), db2mag(20))) ./ exp(1i*angle(vf_HpTF));
@@ -74,7 +78,7 @@ for o = 1:length(v_HpIR(1,:));
                max_error_receiv(k,p,j,o) = max(abs(10.*log10(y_energy_norm(freq_mask))-10.*log10(target_norm(freq_mask))));
                
                % Mean spectral error on a auditory scale 
-                mean_error_receiv(k,p,j,o) = auditory_distance(vf_trcf_mean, fftR(v_entz, 8128), x_freqz, [ 500 4000]); 
+                mean_error_receiv(k,p,j,o) = auditory_distance(vf_trcf_mean, fftR(v_entz, 8128), x_freqz, [ 500 4000], 0); 
                
                clear v_Ht
                clear v_entz
@@ -85,3 +89,4 @@ for o = 1:length(v_HpIR(1,:));
    end
 end
 
+endfunction
