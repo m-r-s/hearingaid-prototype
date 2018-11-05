@@ -6,19 +6,19 @@ function [max_error_receiv, mean_error_receiv,v_Ht] = Calculation_inversion_rece
 %% Loading impulse responses
 v_HpIR = zeros(8128, 0);
 
-S_tmp = load('impulse_responses\HpTF_A1.mat');
+S_tmp = load(['impulse_responses' filesep 'HpTF_A1.mat']);
 v_HpIR =[v_HpIR S_tmp.M_HpIR_r(:,1)];
 
-S_tmp = load('impulse_responses\HpTF_B1.mat');
+S_tmp = load(['impulse_responses' filesep 'HpTF_B1.mat']);
 v_HpIR =[v_HpIR S_tmp.M_HpIR_l(:,[1 3 4]) S_tmp.M_HpIR_r(:,[1 3 4 5])  ];
 
-S_tmp = load('impulse_responses\HpTF_C1.mat');
+S_tmp = load(['impulse_responses' filesep 'HpTF_C1.mat']);
 v_HpIR =[v_HpIR S_tmp.M_HpIR_l(:,3) S_tmp.M_HpIR_r(:,[3 4 5])  ];
 
-S_tmp = load('impulse_responses\HpTF_C2.mat');
+S_tmp = load(['impulse_responses' filesep 'HpTF_C2.mat']);
 v_HpIR =[v_HpIR  S_tmp.M_HpIR_r(:,5)  ];
 
-S_tmp = load('impulse_responses\HpTF_C3.mat');
+S_tmp = load(['impulse_responses' filesep 'HpTF_C3.mat']);
 v_HpIR =[v_HpIR  S_tmp.M_HpIR_r(:,4)  ];
 
 % Measured impulse responses of six receiver pairs can be found here: https://cs.uol.de/s/KtbD5tkFWRL9bPd
@@ -29,7 +29,7 @@ c_devs = {'A1', 'B1', 'C1', 'C2', 'C3'};
 
 vf_trcf = zeros(N_fft/2+1, 10);
 for dev = 1:5
-    S_tmp = load(['impuls_responses\HRIR_' c_devs{dev} '.mat']);
+    S_tmp = load(['impulse_responses' filesep 'HRIR_' c_devs{dev} '.mat']);
     % Diffuse-field TRCF, left
     vf_trcf(:,dev    ) = rms( abs(fftR( S_tmp.M_HRIR_open(:,S_tmp.vi_ch_df, 1), N_fft )), 2 ) ./ ...
                          rms( abs(fftR( S_tmp.M_HRIR_mics(:,S_tmp.vi_ch_df, 1), N_fft )), 2 );

@@ -4,6 +4,8 @@ clc
 clear 
 close all
 
+addpath ../tools
+
 % Parameters:
 N = [8 12 16 24 32];                        % Length of filter
 D = linspace(0,10,11);                      % Delay

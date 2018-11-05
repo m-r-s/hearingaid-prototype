@@ -3,14 +3,14 @@
 function [max_error_mic, v_irsens_df, v_h, v_tot]  = Calculation_inversion_mic(N, D, srate, f_min, f_max)
 
 % Load impuls responses
-c_files = dir('impuls_responses/Sens*');
+c_files = dir(['impulse_responses' filesep 'Sens*']);
 % Measured impuls responses of six microphone pairs can be found here: https://cs.uol.de/s/KtbD5tkFWRL9bPd
 % There the Sens* data indicates the microphone measurements
 
 v_irsens = [];
 v_irsens_df = [];
 for f = 1:length(c_files)
-   s_tmp = load(['impuls_responses/' c_files(f).name]);
+   s_tmp = load(['impulse_responses' filesep c_files(f).name]);
    v_irsens = [v_irsens, s_tmp.M_ir_sens(:,s_tmp.vi_ch_df)];       % Saves relevant angle of incidence
    v_irsens_df = [v_irsens_df, s_tmp.v_ir_sens_df];
 end
