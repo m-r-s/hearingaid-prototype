@@ -29,7 +29,7 @@ c_devs = {'A1', 'B1', 'C1', 'C2', 'C3'};
 
 vf_trcf = zeros(N_fft/2+1, 10);
 for dev = 1:5
-    S_tmp = load(['impulse_responses\HRIR_' c_devs{dev} '.mat']);
+    S_tmp = load(['impuls_responses\HRIR_' c_devs{dev} '.mat']);
     % Diffuse-field TRCF, left
     vf_trcf(:,dev    ) = rms( abs(fftR( S_tmp.M_HRIR_open(:,S_tmp.vi_ch_df, 1), N_fft )), 2 ) ./ ...
                          rms( abs(fftR( S_tmp.M_HRIR_mics(:,S_tmp.vi_ch_df, 1), N_fft )), 2 );
