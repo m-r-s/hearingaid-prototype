@@ -186,9 +186,11 @@ end
 function fitting(freqs, thresholds_left, thresholds_right, action)
   persistent state;
   
-  offsets = [-10 0 10];
-  marginfactors = [0 0.33 0.66];
+  offsets = [20 30 40];
+  marginfactors = [0 0.5 1];
   rolloffs = 1+[1/8 1/4 1/2];
+  center = 70;
+  focus = 5;
   
   switch action
     case 'offset'
@@ -214,7 +216,7 @@ function fitting(freqs, thresholds_left, thresholds_right, action)
   offset = offsets(state.offset)
   marginfactor = marginfactors(state.marginfactor)
   rolloff = rolloffs(state.rolloff)
-  [gt_data, gt_freqs, gt_levels] = prescription_minimalistic(freqs, thresholds_left, thresholds_right, offset, marginfactor, rolloff);
+  [gt_data, gt_freqs, gt_levels] = prescription_minimalistic(freqs, thresholds_left, thresholds_right, offset, marginfactor, rolloff, center, focus);
   writegaintable('/dev/shm/tmp_gaintable.cfg', gt_data);
   mhacontrol(['mha.transducers.mhachain.altplugs.dynamiccompression.mhachain.dc?read:/dev/shm/tmp_gaintable.cfg']);
 end
