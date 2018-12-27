@@ -73,4 +73,7 @@ jack_connect MHA:out_2 system:playback_1
 echo "initial commands"
 echo feedback 3 > commandqueue
 
+echo "start network command server"
+tcpserver -H -R 0.0.0.0 33338 ./netcommand.sh | sed 's/^/[NETCMD] /' &
+
 (cd tools && octave-cli --eval "userinterface")
