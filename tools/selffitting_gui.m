@@ -14,7 +14,6 @@ figure('Position', [ 500 200 1200 1000],
        'Name', 'Simple self-fitting GUI',
        'toolbar', 'none',
        'menubar', 'none');
-
 h.thresholds_freqs = thresholds_freqs;
 h.plot_freqs = plot_freqs;
 h.normal_hearing_threshold = normal_hearing_threshold;
@@ -77,12 +76,16 @@ function mhacontrol(command)
   system(['echo mhacontrol "',command,'" | nc -w 1 127.0.0.1 33338']);
 end
 
-function mhaplay(filename, mode, level, loop)
-  system(['echo mhaplay "',filename,'" "',mode,'" "',level,'" "',loop,'" | nc -w 1 127.0.0.1 33338']);
+function mhaplay(filename)
+  system(['echo mhaplay "',filename,'" "yes" | nc -w 1 127.0.0.1 33338']);
 end
 
 function thresholdnoise(status)
   system(['echo thresholdnoise "',status,'" | nc -w 1 127.0.0.1 33338']);
+end
+
+function live(status)
+  system(['echo live "',status,'" | nc -w 1 127.0.0.1 33338']);
 end
 
 function feedback(duration)
@@ -95,7 +98,6 @@ end
 function record(duration)
   system(['echo record "',duration,'" | nc -w 1 127.0.0.1 33338']);
 end
-
 
 function send_gaintable(gt_data)
   system(['echo " | nc -w 1 127.0.0.1 33338']);
@@ -132,6 +134,15 @@ function update_gaintable (obj)
   toc
 end
 
+function update_live(obj)
+  h = guidata (obj);
+  if get(h.live_checkbox,'value')
+    live('on');
+  else
+    live('off');
+  end
+end
+
 function update_noise(obj)
   h = guidata (obj);
   if get(h.noise_checkbox,'value')
@@ -139,6 +150,10 @@ function update_noise(obj)
   else
     thresholdnoise('off');
   end
+end
+
+function update_record()
+  record('10');
 end
 
 function update_amplification(obj)
@@ -152,6 +167,22 @@ end
 
 function update_feedback(obj)
   feedback(3);
+end
+
+function update_playback(obj)
+  h = guidata (obj);
+  string = get(h.playback_popup,'string');
+  value = get(h.playback_popup,'value');
+  selection = string{value};
+  switch selection
+    case 'off'
+      filename = '';
+    case 'last record'
+      filename ='/dev/shm/recording.wav';
+    otherwise
+      filename = ['/home/pi/hearingaid-prototype/recordings/' selection '.wav'];
+  end
+  mhaplay(filename);
 end
 
 for i=1:length(thresholds_freqs)
@@ -184,7 +215,7 @@ uicontrol ('style', 'text',
   'units', 'normalized',
   'string', 'gain' ,
   'horizontalalignment', 'left',
-  'position', [0.1 0.25 0.15 0.05]);
+  'position', [0.05 0.25 0.15 0.05]);
 
 h.offset_slider = uicontrol ('style', 'slider',
   'units', 'normalized',
@@ -192,13 +223,13 @@ h.offset_slider = uicontrol ('style', 'slider',
   'string', 'slider',
   'callback', @update_gaintable,
   'value', 0.5,
-  'position', [0.2 0.25 0.6 0.05]);
+  'position', [0.15 0.25 0.65 0.05]);
 
 uicontrol ('style', 'text',
   'units', 'normalized',
   'string', 'compression' ,
   'horizontalalignment', 'left',
-  'position', [0.1 0.2 0.15 0.05]);
+  'position', [0.05 0.2 0.15 0.05]);
 
 h.rolloff_slider = uicontrol ('style', 'slider',
   'units', 'normalized',
@@ -206,13 +237,13 @@ h.rolloff_slider = uicontrol ('style', 'slider',
   'string', 'slider',
   'callback', @update_gaintable,
   'value', 0.5,
-  'position', [0.2 0.2 0.6 0.05]);
+  'position', [0.15 0.2 0.65 0.05]);
 
 uicontrol ('style', 'text',
   'units', 'normalized',
   'string', 'boost factor' ,
   'horizontalalignment', 'left',
-  'position', [0.1 0.15 0.15 0.05]);
+  'position', [0.05 0.15 0.15 0.05]);
           
 h.marginfactor_slider = uicontrol ('style', 'slider',
   'units', 'normalized',
@@ -220,13 +251,13 @@ h.marginfactor_slider = uicontrol ('style', 'slider',
   'string', 'slider',
   'callback', @update_gaintable,
   'value', 0.5,
-  'position', [0.2 0.15 0.6 0.05]);
+  'position', [0.15 0.15 0.65 0.05]);
 
 uicontrol ('style', 'text',
   'units', 'normalized',
   'string', 'boost level' ,
   'horizontalalignment', 'left',
-  'position', [0.1 0.1 0.15 0.05]);
+  'position', [0.05 0.1 0.15 0.05]);
 
 h.center_slider = uicontrol ('style', 'slider',
   'units', 'normalized',
@@ -234,13 +265,13 @@ h.center_slider = uicontrol ('style', 'slider',
   'string', 'slider',
   'callback', @update_gaintable,
   'value', 0.5,
-  'position', [0.2 0.1 0.6 0.05]);
+  'position', [0.15 0.1 0.65 0.05]);
   
 uicontrol ('style', 'text',
   'units', 'normalized',
   'string', 'focus' ,
   'horizontalalignment', 'left',
-  'position', [0.1 0.05 0.15 0.05]);
+  'position', [0.05 0.05 0.15 0.05]);
 
 h.focus_slider = uicontrol ('style', 'slider',
   'units', 'normalized',
@@ -248,28 +279,53 @@ h.focus_slider = uicontrol ('style', 'slider',
   'string', 'slider',
   'callback', @update_gaintable,
   'value', 0.5,
-  'position', [0.2 0.05 0.6 0.05]);
+  'position', [0.15 0.05 0.65 0.05]);
 
-h.feedback_button = uicontrol ('style', 'pushbutton',
+h.live_checkbox = uicontrol ('style', 'checkbox',
   'units', 'normalized',
-  'string', 'feedback',
-  'callback', @update_feedback,
-  'position', [0.85 0.05 0.1 0.05]);
+  'string', 'live',
+  'value', 1,
+  'callback', @update_live,
+  'position', [0.85 0.275 0.05 0.025]);
+  
+h.record_button = uicontrol ('style', 'pushbutton',
+  'units', 'normalized',
+  'string', 'record',
+  'callback', @update_record,
+  'position', [0.90 0.275 0.05 0.025]);
 
+uicontrol ('style', 'text',
+  'units', 'normalized',
+  'string', 'playback' ,
+  'horizontalalignment', 'left',
+  'position', [0.85 0.25 0.1 0.025]);
+  
+h.playback_popup = uicontrol ('style', 'popupmenu',
+  'units', 'normalized',
+  'string', {'off' 'last record'},
+  'callback', @update_playback,
+  'position', [0.85 0.225 0.1 0.025]);
+  
 h.amplification_checkbox = uicontrol ('style', 'checkbox',
   'units', 'normalized',
   'string', 'amplification',
   'value', 1,
   'callback', @update_amplification,
-  'position', [0.85 0.25 0.1 0.05]);
+  'position', [0.85 0.175 0.1 0.025]);
   
 h.noise_checkbox = uicontrol ('style', 'checkbox',
   'units', 'normalized',
   'string', 'threshold noise',
   'value', 0,
   'callback', @update_noise,
-  'position', [0.85 0.2 0.1 0.05]);
- 
+  'position', [0.85 0.125 0.1 0.025]);
+  
+h.feedback_button = uicontrol ('style', 'pushbutton',
+  'units', 'normalized',
+  'string', 'feedback',
+  'callback', @update_feedback,
+  'position', [0.85 0.05 0.1 0.05]);
+
   
 guidata (gcf, h);
 update_gaintable (gcf);

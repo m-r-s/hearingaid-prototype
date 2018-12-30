@@ -47,6 +47,10 @@ killall commander.sh -9 &> /dev/null
 echo "killall octave-cli"
 killall octave-cli -9 &> /dev/null
 
+echo "killall tcpserver"
+killall tcpserver -9 &> /dev/null
+
+
 sleep 1
 
 echo "start jackd"

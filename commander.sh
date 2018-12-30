@@ -22,15 +22,11 @@ mhaplay() {
   local LEVELMODE="$2"
   local LEVEL="$3"
   local LOOP="$4"
-  local RETVAL=1
   mhacontrol "mha.transducers.mhachain.playback.filename = "
   mhacontrol "mha.transducers.mhachain.playback.levelmode = ${LEVELMODE}"
   mhacontrol "mha.transducers.mhachain.playback.level = ${LEVEL}"
   mhacontrol "mha.transducers.mhachain.playback.loop = ${LOOP}"
-  mhacontrol "mha.transducers.mhachain.playback.filename = $FILE" && RETVAL=0
-  sleep 0.1
-  rm "$FILE"
-  return "$RETVAL"
+  mhacontrol "mha.transducers.mhachain.playback.filename = ${FILE}"
 }
 
 text2speech() {
@@ -38,6 +34,8 @@ text2speech() {
   local FILE=$(mktemp -p /dev/shm)
   flite -t "$1" "$FILE"
   mhaplay "$FILE" "rms" "70" "no"
+  sleep 0.1
+  rm "$FILE"
 }
 
 feedback() {
@@ -79,18 +77,33 @@ thresholdnoise() {
   esac
 }
 
+live() {
+  local STATUS="$1"
+  case "$STATUS" in
+    on)
+      jack_connect abhang:output_1 MHA:in_1
+      jack_connect abhang:output_2 MHA:in_2
+    ;;
+    off)
+      jack_disconnect abhang:output_1 MHA:in_1
+      jack_disconnect abhang:output_2 MHA:in_2
+    ;;
+  esac
+}
+
 record() {
   local DURATION=$1
-  local TEMPFILE="/dev/shm/recording-$$.wav"
   local TARGETFILE="${HOME}/recordings/"$(date --iso-8601=seconds)".wav"
-  jack_rec -f "$TEMPFILE" -d"$DURATION" -b32 abhang:output_1 abhang:output_2
-  mv "$TEMPFILE" "$TARGETFILE"
+  mhacontrol "mha.transducers.mhachain.record.record = yes"
+  sleep "$DURATION"
+  mhacontrol "mha.transducers.mhachain.record.record = no"
+  cp "/dev/shm/recording.wav" "$TARGETFILE"
 }
 
 while true ; do
   while read line; do
     COMMAND="${line%% *}"
-    ARGUMENTS="${line#${COMMAND} }"
+    ARGUMENTS=("${line#${COMMAND} }")
     echo "COMMAND '$COMMAND'"
     echo "ARGUMENTS '$ARGUMENTS'"
     case "$COMMAND" in
@@ -104,10 +117,15 @@ while true ; do
       mhacontrol ${ARGUMENTS[@]}
     ;;
     "mhaplay")
-      mhaplay ${ARGUMENTS[@]}
+      ARGUMENTS=(${ARGUMENTS[@]})
+      # level needs to be the same as "mha.transducers.calib_out.peaklevel"
+      mhaplay "${ARGUMENTS[0]}" "relative" "92.8" "${ARGUMENTS[1]}"
     ;;
     "thresholdnoise")
       thresholdnoise ${ARGUMENTS[@]}
+    ;;
+    "live")
+      live ${ARGUMENTS[@]}
     ;;
     "record")
       record ${ARGUMENTS[@]}
