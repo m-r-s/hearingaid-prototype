@@ -229,9 +229,6 @@ function mhacontrol(command)
   system(['echo mhacontrol "',command,'" > ../commandqueue']);
 end
 
-function mhaplay(filename, loop)
-  system(['echo mhaplay "',filename,'" "',loop,'" > ../commandqueue']);
-end
 function thresholdnoise(status)
   system(['echo thresholdnoise "',status,'" > ../commandqueue']);
 end
