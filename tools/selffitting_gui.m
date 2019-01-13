@@ -132,6 +132,7 @@ function update_gaintable (obj)
   end
   mhacontrol(['mha.transducers.mhachain.altplugs.dynamiccompression.mhachain.dc.gtdata = ',gt_data2string(gt_data)]);
   toc
+  drawnow;
 end
 
 function update_live(obj)
@@ -152,7 +153,7 @@ function update_noise(obj)
   end
 end
 
-function update_record()
+function start_recording()
   record('10');
 end
 
@@ -165,7 +166,7 @@ function update_amplification(obj)
   end
 end
 
-function update_feedback(obj)
+function measure_feedback(obj)
   feedback(3);
 end
 
@@ -291,7 +292,7 @@ h.live_checkbox = uicontrol ('style', 'checkbox',
 h.record_button = uicontrol ('style', 'pushbutton',
   'units', 'normalized',
   'string', 'record',
-  'callback', @update_record,
+  'callback', @start_recording,
   'position', [0.90 0.275 0.05 0.025]);
 
 uicontrol ('style', 'text',
@@ -323,9 +324,13 @@ h.noise_checkbox = uicontrol ('style', 'checkbox',
 h.feedback_button = uicontrol ('style', 'pushbutton',
   'units', 'normalized',
   'string', 'feedback',
-  'callback', @update_feedback,
+  'callback', @measure_feedback,
   'position', [0.85 0.05 0.1 0.05]);
 
   
-guidata (gcf, h);
-update_gaintable (gcf);
+guidata(gcf, h);
+update_gaintable(gcf);
+update_playback(gcf);
+update_live(gcf);
+update_noise(gcf);
+update_amplification(gcf);
