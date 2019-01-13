@@ -188,7 +188,7 @@ function fitting(freqs, thresholds_left, thresholds_right, action)
   
   offsets = [20 30 40];
   marginfactors = [0 0.5 1];
-  rolloffs = 1+[1/8 1/4 1/2];
+  rolloffs = 1+2.^-([0 0.5 1].*3);
   center = 70;
   focus = 5;
   
