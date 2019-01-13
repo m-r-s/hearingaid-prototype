@@ -9,7 +9,7 @@
 
 function [signal, fs] = gensweep(type, variable, frequency)
   fs = 48000; % Hz
-  reference_level = 130; % dB SPL
+  reference_level = 93.979; % dB SPL
   sweep_duration = 0.250; % s
   sweep_width = [0.95 1.05];
   flank_duration = 0.010; % s

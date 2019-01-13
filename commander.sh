@@ -118,8 +118,8 @@ while true ; do
     ;;
     "mhaplay")
       ARGUMENTS=(${ARGUMENTS[@]})
-      # level needs to be the same as "mha.transducers.calib_out.peaklevel"
-      mhaplay "${ARGUMENTS[0]}" "relative" "92.8" "${ARGUMENTS[1]}"
+      # level is -20*log10(20*10^-6) = 93.979
+      mhaplay "${ARGUMENTS[0]}" "relative" "93.979" "${ARGUMENTS[1]}"
     ;;
     "thresholdnoise")
       thresholdnoise ${ARGUMENTS[@]}

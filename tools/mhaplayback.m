@@ -10,5 +10,7 @@
 function mhaplayback(signal, fs)
   audiofile = [tempname('/dev/shm/') '.wav'];
   audiowrite(audiofile, signal, fs, 'BitsPerSample', 32);
-  system(['echo mhaplay "',audiofile,'" relative 130 no > ~/hearingaid-prototype/commandqueue']);
+  system(['echo mhaplay "',audiofile,'" no > ~/hearingaid-prototype/commandqueue']);
+  pause(0.1);
+  unlink(audiofile);
 end

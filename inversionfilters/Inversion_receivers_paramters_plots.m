@@ -85,6 +85,6 @@ ylabel('Gain / dB');
 
 % Print new filter coefficients
 printf('START FILTER COEFFICIENTS\n');
-printf('%.15f ',inversion_filter);
-printf('\nEND FILTER COEFFICIENTS\n');
+printf('%.15f\n',inversion_filter);
+printf('END FILTER COEFFICIENTS\n');
 

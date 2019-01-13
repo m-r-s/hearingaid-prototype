@@ -12,7 +12,7 @@
 #include <math.h>
 #include <jack/jack.h>
 
-#define AMPLITUDE 0.1
+#define AMPLITUDE 0.01
 #define DELTAPHIINIT 0.006544984694979 // 50 Hz at 48 kHz samplerate
 #define DELTAPHIFACTOR 1.000125
 #define ACTIVE 48000

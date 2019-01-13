@@ -12,7 +12,7 @@
 #include <math.h>
 #include <jack/jack.h>
 
-#define AMPLITUDE 0.1
+#define AMPLITUDE 0.01
 
 jack_port_t *output_port1, *output_port2;
 jack_client_t *client;
