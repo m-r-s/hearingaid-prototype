@@ -132,7 +132,7 @@ function update_gaintable (obj)
   set(h.h_threshold{1},'ydata',hl2spl(h.thresholds_freqs,thresholds_left));
   set(h.h_threshold{2},'ydata',hl2spl(h.thresholds_freqs,thresholds_right));
 
-  [gt_data, gt_freqs, gt_levels] = prescription_minimalistic(h.thresholds_freqs, thresholds_left, thresholds_right, offset, marginfactor, rolloff, center, focus);
+  [gt_data, gt_freqs, gt_levels] = prescription_minimalistic(h.thresholds_freqs, hl2spl(h.thresholds_freqs,thresholds_left), hl2spl(h.thresholds_freqs,thresholds_right), offset, marginfactor, rolloff, center, focus);
   for i=1:2
     gain = interp2(gt_levels,gt_freqs.',gt_data(1+(i-1).*length(gt_freqs):i.*length(gt_freqs),:),h.plot_levels.',h.plot_freqs,'linear');
     for j=1:length(h.plot_levels)
@@ -312,7 +312,7 @@ uicontrol ('style', 'text',
   
 h.playback_popup = uicontrol ('style', 'popupmenu',
   'units', 'normalized',
-  'string', {'off' 'last record'},
+  'string', {'off' 'last record' 'night_clock_49' 'night_fridge_46' 'siren_far_72' 'ducks_72' 'bird_street_74' 'street_calm_76' 'street_nocars_78' 'bar_78' 'zuege_79' 'street_noises_84' 'traffic_87' 'flute_kids_93'},
   'callback', @update_playback,
   'position', [0.85 0.225 0.1 0.025]);
   
