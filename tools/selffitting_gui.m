@@ -12,6 +12,7 @@ clear
 clc
 
 thresholds_freqs = [125 250 500 1000 2000 4000 8000 16000];
+thresholds_init  = [ 30  54  60   52   52   57   42    30]; % dB HL
 
 plot_freqs = 1000 .* 2.^(-3:0.5:4);
 normal_hearing_threshold = hl2spl(plot_freqs, 0);
@@ -203,7 +204,7 @@ for i=1:length(thresholds_freqs)
     'position', [0.02+i*0.05 0.95 0.05 0.05]);
   h.thresholds_left{i} = uicontrol ('style', 'edit',
     'units', 'normalized',
-    'string', '0',
+    'string', num2str(thresholds_init(i)),
     'callback', @update_gaintable,
     'position', [0.02+i*0.05 0.90 0.05 0.05]);
 end
@@ -216,7 +217,7 @@ for i=1:length(thresholds_freqs)
     'position', [0.50+i*0.05 0.95 0.05 0.05]);
   h.thresholds_right{i} = uicontrol ('style', 'edit',
     'units', 'normalized',
-    'string', '0',
+    'string', num2str(thresholds_init(i)),
     'callback', @update_gaintable,
     'position', [0.50+i*0.05 0.90 0.05 0.05]);
 end
@@ -319,7 +320,7 @@ h.playback_popup = uicontrol ('style', 'popupmenu',
 h.amplification_checkbox = uicontrol ('style', 'checkbox',
   'units', 'normalized',
   'string', 'amplification',
-  'value', 1,
+  'value', 0,
   'callback', @update_amplification,
   'position', [0.85 0.175 0.1 0.025]);
   
