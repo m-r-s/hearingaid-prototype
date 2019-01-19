@@ -313,7 +313,7 @@ uicontrol ('style', 'text',
   
 h.playback_popup = uicontrol ('style', 'popupmenu',
   'units', 'normalized',
-  'string', {'off' 'last record' 'night_clock_49' 'night_fridge_46' 'siren_far_72' 'ducks_72' 'bird_street_74' 'street_calm_76' 'street_nocars_78' 'bar_78' 'zuege_79' 'street_noises_84' 'traffic_87' 'flute_kids_93'},
+  'string', {'off' 'last record'},
   'callback', @update_playback,
   'position', [0.85 0.225 0.1 0.025]);
   
