@@ -40,6 +40,8 @@ text2speech() {
 
 feedback() {
   local DURATION="$1"
+  jack_disconnect MHA:out_1 system:playback_2
+  jack_disconnect MHA:out_2 system:playback_1
   killall abhang -9 &> /dev/null
   (cd "${TOOLSDIR}/signals" && ./pinknoise) 2>&1 &
   sleep 0.5
@@ -57,6 +59,8 @@ feedback() {
   jack_connect MHA:out_2 abhang:input_4
   jack_connect abhang:output_1 MHA:in_1
   jack_connect abhang:output_2 MHA:in_2
+  jack_connect MHA:out_1 system:playback_2
+  jack_connect MHA:out_2 system:playback_1
 }
 
 thresholdnoise() {
