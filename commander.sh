@@ -101,7 +101,7 @@ record() {
   mhacontrol "mha.transducers.mhachain.record.record = yes"
   sleep "$DURATION"
   mhacontrol "mha.transducers.mhachain.record.record = no"
-  cp "/dev/shm/recording.wav" "$TARGETFILE"
+  mv "/dev/shm/recording.wav" "$TARGETFILE"
 }
 
 while true ; do
