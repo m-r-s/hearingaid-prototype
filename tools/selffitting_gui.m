@@ -121,15 +121,15 @@ function update_gaintable (obj)
   marginfactor = get(h.marginfactor_slider,'value');
   center = 50+get(h.center_slider,'value').*40;
   focus = round(get(h.focus_slider,'value').*100)./10;
-  
+
   thresholds_left = zeros(size(h.thresholds_freqs));
   thresholds_right = zeros(size(h.thresholds_freqs));
-  
+
   for i=1:length(h.thresholds_freqs)
     thresholds_left(i) = str2num(get(h.thresholds_left{i},'string'));
     thresholds_right(i) = str2num(get(h.thresholds_right{i},'string'));
   end
-  
+
   set(h.h_threshold{1},'ydata',hl2spl(h.thresholds_freqs,thresholds_left));
   set(h.h_threshold{2},'ydata',hl2spl(h.thresholds_freqs,thresholds_right));
 
@@ -173,6 +173,18 @@ function update_amplification(obj)
     mhacontrol('mha.transducers.mhachain.altplugs.select = dynamiccompression');
   else
     mhacontrol('mha.transducers.mhachain.altplugs.select = identity');
+  end
+end
+
+function update_calib(obj)
+  h = guidata (obj);
+  if get(h.calib_checkbox,'value')
+	% values taken from current openMHA.cfg
+    mhacontrol('mha.transducers.calib_in.fir = [[-0.674757033017875 -0.339128228007168 0.030117856798366 -0.119542483672035 0.131726684555067 -0.071387589553860 0.056561094657502 -0.013365060531109 0.007091265106959 0.006913350591302 -0.002602409570910 0.023338189483743 -0.018652297865493 0.021281416315377 -0.014374905102702 0.015659551668403];[-0.674757033017875 -0.339128228007168 0.030117856798366 -0.119542483672035 0.131726684555067 -0.071387589553860 0.056561094657502 -0.013365060531109 0.007091265106959 0.006913350591302 -0.002602409570910 0.023338189483743 -0.018652297865493 0.021281416315377 -0.014374905102702 0.015659551668403]]');
+    mhacontrol('mha.transducers.calib_out.fir = [[-0.723329250680037 1.285750531421244 -1.764370643350338 1.702299222653803 0.569187694811727 -1.301642333817312 0.540112043557634 -0.111972475691304 0.187607100395961 0.532899301077540 -0.733701264924906 0.290587502735630 0.470074681167595 -0.330332208101367 -0.010615612830630 -0.221018479662762 -0.020491963942295 0.385847945936633 -0.198969798086483 -0.123437157204177 0.152968427130900 -0.205009361694624 -0.071974598348291 0.041537565470939 -0.058703551389704 0.006171609199330 -0.037439953306526 -0.032735557865821 0.028903184718236 -0.019431703287974 -0.069837180982837 0.038967963643885 -0.015801874625706 -0.060091628384134 0.057102986709234 -0.043134256115441 -0.016815289718170 0.002879163232524 -0.031134102833679 0.026124175604008 -0.040758325083950 0.022598560658844 0.012982112833010 -0.029909215215110 0.018353193685970 0.012015086827306 0.031537385134343 -0.028980188877489 0.026113358679986 0.017332696993042 -0.018853690496196 0.059665425003585 -0.017281793549857 0.007285675861939 0.010218784848149 0.003173184622963 0.040817408121183 -0.024810702312558 0.007344195504224 0.007639434860116 -0.004797394889051 0.025321400227842 -0.005638659121956 -0.002191206231116];[-0.723329250680037 1.285750531421244 -1.764370643350338 1.702299222653803 0.569187694811727 -1.301642333817312 0.540112043557634 -0.111972475691304 0.187607100395961 0.532899301077540 -0.733701264924906 0.290587502735630 0.470074681167595 -0.330332208101367 -0.010615612830630 -0.221018479662762 -0.020491963942295 0.385847945936633 -0.198969798086483 -0.123437157204177 0.152968427130900 -0.205009361694624 -0.071974598348291 0.041537565470939 -0.058703551389704 0.006171609199330 -0.037439953306526 -0.032735557865821 0.028903184718236 -0.019431703287974 -0.069837180982837 0.038967963643885 -0.015801874625706 -0.060091628384134 0.057102986709234 -0.043134256115441 -0.016815289718170 0.002879163232524 -0.031134102833679 0.026124175604008 -0.040758325083950 0.022598560658844 0.012982112833010 -0.029909215215110 0.018353193685970 0.012015086827306 0.031537385134343 -0.028980188877489 0.026113358679986 0.017332696993042 -0.018853690496196 0.059665425003585 -0.017281793549857 0.007285675861939 0.010218784848149 0.003173184622963 0.040817408121183 -0.024810702312558 0.007344195504224 0.007639434860116 -0.004797394889051 0.025321400227842 -0.005638659121956 -0.002191206231116]]');
+  else
+    mhacontrol('mha.transducers.calib_in.fir = 1');
+    mhacontrol('mha.transducers.calib_out.fir = 1');
   end
 end
 
@@ -255,7 +267,7 @@ uicontrol ('style', 'text',
   'string', 'boost factor' ,
   'horizontalalignment', 'left',
   'position', [0.05 0.15 0.15 0.05]);
-          
+
 h.marginfactor_slider = uicontrol ('style', 'slider',
   'units', 'normalized',
   'sliderstep', [0.1 0.1],
@@ -277,7 +289,7 @@ h.center_slider = uicontrol ('style', 'slider',
   'callback', @update_gaintable,
   'value', 0.5,
   'position', [0.15 0.1 0.65 0.05]);
-  
+
 uicontrol ('style', 'text',
   'units', 'normalized',
   'string', 'focus' ,
@@ -298,7 +310,7 @@ h.live_checkbox = uicontrol ('style', 'checkbox',
   'value', 1,
   'callback', @update_live,
   'position', [0.85 0.275 0.05 0.025]);
-  
+
 h.record_button = uicontrol ('style', 'pushbutton',
   'units', 'normalized',
   'string', 'record',
@@ -310,37 +322,45 @@ uicontrol ('style', 'text',
   'string', 'playback' ,
   'horizontalalignment', 'left',
   'position', [0.85 0.25 0.1 0.025]);
-  
+
 h.playback_popup = uicontrol ('style', 'popupmenu',
   'units', 'normalized',
   'string', {'off' 'last record'},
   'callback', @update_playback,
   'position', [0.85 0.225 0.1 0.025]);
-  
+
 h.amplification_checkbox = uicontrol ('style', 'checkbox',
   'units', 'normalized',
   'string', 'amplification',
   'value', 0,
   'callback', @update_amplification,
-  'position', [0.85 0.175 0.1 0.025]);
-  
+  'position', [0.85 0.15 0.1 0.025]);
+
 h.noise_checkbox = uicontrol ('style', 'checkbox',
   'units', 'normalized',
   'string', 'threshold noise',
   'value', 0,
   'callback', @update_noise,
+  'position', [0.85 0.175 0.1 0.025]);
+
+h.calib_checkbox = uicontrol ('style', 'checkbox',
+  'units', 'normalized',
+  'string', 'calibration',
+  'value', 1,
+  'callback', @update_calib,
   'position', [0.85 0.125 0.1 0.025]);
-  
+
 h.feedback_button = uicontrol ('style', 'pushbutton',
   'units', 'normalized',
   'string', 'feedback',
   'callback', @measure_feedback,
   'position', [0.85 0.05 0.1 0.05]);
 
-  
+
 guidata(gcf, h);
 update_gaintable(gcf);
 update_playback(gcf);
 update_live(gcf);
 update_noise(gcf);
+update_calib(gcf);
 update_amplification(gcf);
