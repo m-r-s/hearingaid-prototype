@@ -12,10 +12,10 @@ clear
 clc
 
 thresholds_freqs = [125 250 500 1000 2000 4000 8000 16000];
-thresholds_init  = [ 30  54  60   52   52   57   42    30]; % dB HL
+thresholds_init  = [ 30  65  65   56   54   52   52    30]; % dB SPL at mic
 
 plot_freqs = 1000 .* 2.^(-3:0.5:4);
-normal_hearing_threshold = hl2spl(plot_freqs, 0);
+normal_hearing_threshold = zeros(size(plot_freqs));
 plot_levels = 0:5:100;
 plot_colors = jet(length(plot_levels)).*0.8;
 
@@ -35,7 +35,7 @@ position_title = {'L E F T', 'R I G H T'};
 for i=1:2
   h.ax(i) = axes ('position', figure_positions{i});
   box('on');
-  h_threshold = plot(log(thresholds_freqs), hl2spl(thresholds_freqs,zeros(size(thresholds_freqs))),'-k','linewidth',2);
+  h_threshold = plot(log(thresholds_freqs), zeros(size(thresholds_freqs)),'-k','linewidth',2);
   hold on;
   title(position_title{i});
   plot(log(plot_freqs), normal_hearing_threshold,'--k','linewidth',2);
@@ -45,7 +45,7 @@ for i=1:2
   set(gca,'xticklabel',plot_freqs(1:2:end));
   set(gca,'ytick',0:10:100);
   xlabel('Frequency / Hz');
-  ylabel('Levels / dB SPL');
+  ylabel('Levels / dB SPL (in device)');
   for j=1:length(plot_levels)
     plot(log(plot_freqs),ones(size(plot_freqs)).*plot_levels(j),'--','color',plot_colors(j,:),'linewidth',2);
   end
@@ -130,10 +130,10 @@ function update_gaintable (obj)
     thresholds_right(i) = str2num(get(h.thresholds_right{i},'string'));
   end
 
-  set(h.h_threshold{1},'ydata',hl2spl(h.thresholds_freqs,thresholds_left));
-  set(h.h_threshold{2},'ydata',hl2spl(h.thresholds_freqs,thresholds_right));
+  set(h.h_threshold{1},'ydata',thresholds_left);
+  set(h.h_threshold{2},'ydata',thresholds_right);
 
-  [gt_data, gt_freqs, gt_levels] = prescription_minimalistic(h.thresholds_freqs, hl2spl(h.thresholds_freqs,thresholds_left), hl2spl(h.thresholds_freqs,thresholds_right), offset, marginfactor, rolloff, center, focus);
+  [gt_data, gt_freqs, gt_levels] = prescription_minimalistic(h.thresholds_freqs, thresholds_left, thresholds_right, offset, marginfactor, rolloff, center, focus);
   for i=1:2
     gain = interp2(gt_levels,gt_freqs.',gt_data(1+(i-1).*length(gt_freqs):i.*length(gt_freqs),:),h.plot_levels.',h.plot_freqs,'linear');
     for j=1:length(h.plot_levels)
