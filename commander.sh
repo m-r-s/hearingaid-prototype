@@ -101,7 +101,10 @@ record() {
   mhacontrol "mha.transducers.mhachain.record.record = yes"
   sleep "$DURATION"
   mhacontrol "mha.transducers.mhachain.record.record = no"
-  cp "/dev/shm/recording.wav" "$TARGETFILE"
+  sleep 0.1
+  # Move is atomic (copy isn't) but we also want the copy
+  mv "/dev/shm/recording.wav" "$TARGETFILE"
+  cp "$TARGETFILE" "/dev/shm/recording.wav"
 }
 
 while true ; do
