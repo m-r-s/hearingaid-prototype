@@ -325,7 +325,7 @@ uicontrol ('style', 'text',
 
 h.playback_popup = uicontrol ('style', 'popupmenu',
   'units', 'normalized',
-  'string', {'off' 'last record' '35-29-25_fridge' '36-26-19_clock' '53-41-34_footsteps' '55-44-33_handwash' '63-57-37_micre' '63-57-51_coffeemachine' '64-33-24_keyboardwriting' '64-42-35_foyer' '64-53-46_autobahn' '66-56-48_siren' '68-57-50_drivingnews' '68-59-52_street' '70-61-53_street' '72-57-49_bird' '72-63-60_coffeegrinder' '73-60-50_cardriveby' '75-25-17_phone' '77-54-46_ducks' '78-68-60_street' '79-59-50_bar' '81-54-34_coffeemachine' '81-61-47_traincrossing' '82-53-35_shakeout' '83-69-60_mainstreet' '83-73-65_traffic' '100-64-37_flute'},
+  'string', {'off' 'last record' '35-29-25_fridge' '36-26-19_clock' '53-41-34_footsteps' '55-44-33_handwash' '63-57-37_microwave' '63-57-51_coffeemachine' '64-33-24_keyboardwriting' '64-42-35_foyer' '64-53-46_autobahn' '66-56-48_siren' '68-57-50_drivingnews' '68-59-52_street' '70-61-53_street' '72-57-49_bird' '72-63-60_coffeegrinder' '73-60-50_cardriveby' '75-25-17_phone' '77-54-46_ducks' '78-68-60_street' '79-59-50_bar' '81-54-34_coffeemachine' '81-61-47_traincrossing' '82-53-35_shakeout' '83-69-60_mainstreet' '83-73-65_traffic' '100-64-37_flute'},
   'callback', @update_playback,
   'position', [0.85 0.225 0.1 0.025]);
 
@@ -358,9 +358,9 @@ h.feedback_button = uicontrol ('style', 'pushbutton',
 
 
 guidata(gcf, h);
-update_gaintable(gcf);
-update_playback(gcf);
-update_live(gcf);
-update_noise(gcf);
 update_calib(gcf);
 update_amplification(gcf);
+update_gaintable(gcf);
+update_noise(gcf);
+update_playback(gcf);
+update_live(gcf);
