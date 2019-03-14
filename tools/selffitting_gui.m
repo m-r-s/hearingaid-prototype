@@ -12,10 +12,11 @@ clear
 clc
 
 thresholds_freqs = [125 250 500 1000 2000 4000 8000 16000];
-thresholds_init  = [ 30  65  65   56   54   52   52    30]; % dB SPL at mic
+thresholds_init  = [ 33  65  65   56   54   52   52    30]; % dB SPL at mic
+normal_threshold = [ 33  24  13    5   13   15   14    11]; % Estimated
 
 plot_freqs = 1000 .* 2.^(-3:0.5:4);
-normal_hearing_threshold = zeros(size(plot_freqs));
+plot_threshold = interp1(thresholds_freqs,normal_threshold,plot_freqs);
 plot_levels = 0:5:100;
 plot_colors = jet(length(plot_levels)).*0.8;
 
@@ -26,7 +27,7 @@ figure('Position', [ 500 200 1200 1000],
        'menubar', 'none');
 h.thresholds_freqs = thresholds_freqs;
 h.plot_freqs = plot_freqs;
-h.normal_hearing_threshold = normal_hearing_threshold;
+h.plot_threshold = plot_threshold;
 h.plot_levels = plot_levels;
 h.plot_colors = plot_colors;
 
@@ -38,7 +39,7 @@ for i=1:2
   h_threshold = plot(log(thresholds_freqs), zeros(size(thresholds_freqs)),'-k','linewidth',2);
   hold on;
   title(position_title{i});
-  plot(log(plot_freqs), normal_hearing_threshold,'--k','linewidth',2);
+  plot(log(plot_freqs), plot_threshold,'--k','linewidth',2);
   xlim(log([min(plot_freqs) max(plot_freqs)]));
   ylim([-10 110]);
   set(gca,'xtick',log(plot_freqs(1:2:end)));
