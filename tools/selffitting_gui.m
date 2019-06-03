@@ -12,7 +12,7 @@ clear
 clc
 
 thresholds_freqs = [125 250 500 1000 2000 4000 8000 16000];
-thresholds_init  = [ 33  65  65   56   54   52   52    30]; % dB SPL at mic
+thresholds_init  = [ 39  71  71   62   60   58   58    36]; % dB SPL at mic
 normal_threshold = [ 33  24  13    5   13   15   14    11]; % Estimated
 
 plot_freqs = 1000 .* 2.^(-3:0.5:4);
@@ -326,7 +326,7 @@ uicontrol ('style', 'text',
 
 h.playback_popup = uicontrol ('style', 'popupmenu',
   'units', 'normalized',
-  'string', {'off' 'last record' '35-29-25_fridge' '36-26-19_clock' '53-41-34_footsteps' '55-44-33_handwash' '63-57-37_microwave' '63-57-51_coffeemachine' '64-33-24_keyboardwriting' '64-42-35_foyer' '64-53-46_autobahn' '66-56-48_siren' '68-57-50_drivingnews' '68-59-52_street' '70-61-53_street' '72-57-49_bird' '72-63-60_coffeegrinder' '73-60-50_cardriveby' '75-25-17_phone' '77-54-46_ducks' '78-68-60_street' '79-59-50_bar' '81-54-34_coffeemachine' '81-61-47_traincrossing' '82-53-35_shakeout' '83-69-60_mainstreet' '83-73-65_traffic' '100-64-37_flute'},
+  'string', {'off' 'last record' '35-29-25_fridge' '36-26-19_clock' '53-41-34_footsteps' '55-44-33_handwash' '63-57-37_microwave' '63-57-51_coffeemachine' '64-33-24_keyboardwriting' '64-42-35_foyer' '64-53-46_autobahn' '66-56-48_siren' '68-57-50_drivingnews' '68-59-52_street' '70-61-53_street' '72-57-49_bird' '72-63-60_coffeegrinder' '73-50-42_steeldrum-steps' '73-60-50_cardriveby' '73-63-57_steet-laughter' '75-25-17_phone' '77-54-46_ducks' '78-68-60_street' '78-69-62_lisboa-bride-bird' '79-59-50_bar' '81-54-34_coffeemachine' '81-61-47_traincrossing' '81-66-60_lisboa-plane-landing' '82-53-35_shakeout' '83-69-60_mainstreet' '83-73-65_traffic' '86-75-68_lisboa-bride-train' '88-73-65_lisboa-train' '100-64-37_flute'},
   'callback', @update_playback,
   'position', [0.85 0.225 0.1 0.025]);
 
