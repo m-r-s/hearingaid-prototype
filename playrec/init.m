@@ -12,6 +12,8 @@ addpath('playrec');
 pagesize = 128;
 pagebufferlength = 2;
 
+process([],fs,pagesize);
+
 if playrec('isInitialised')
   playrec('reset')
   sleep(0.1);
@@ -33,8 +35,8 @@ end
 
 playrec('delPage');
 
-%figure;
-%h = imagesc(zeros(2,pagesize));
+figure;
+h = imagesc(zeros(2,pagesize));
 
 pagelist = zeros(pagebufferlength,1);
 for i=1:pagebufferlength
@@ -47,12 +49,10 @@ while true;
   tic;
   in = playrec('getRec', pagelist(pagebufferidx));
   playrec('delPage', pagelist(pagebufferidx));
-%  in_fft = fft(in);
-%  in_fft2 = in_fft.*conj(in_fft);
   out = process(in);
   pagelist(pagebufferidx) = playrec('playrec',out,[1 2],pagesize,[1 2]);
-%  set(h,'cdata',in.');
-%  drawnow;
+  set(h,'cdata',20*log10(abs(in_fft)));
+  drawnow;
   pagebufferidx = pagebufferidx + 1;
   if pagebufferidx > pagebufferlength
     pagebufferidx = 1;
