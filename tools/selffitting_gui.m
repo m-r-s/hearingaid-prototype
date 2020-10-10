@@ -1,4 +1,4 @@
-% Copyright 2018 Marc René Schädler
+% Copyright 2018-2020 Marc René Schädler
 %
 % This file is part of the mobile hearing aid prototype project
 % The the mobile hearing aid prototype project is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -11,14 +11,16 @@ close all
 clear
 clc
 
+graphics_toolkit qt;
+
 thresholds_freqs = [125 250 500 1000 2000 4000 8000 16000];
 thresholds_init  = [ 39  71  71   62   60   58   58    36]; % dB SPL at mic
 normal_threshold = [ 33  24  13    5   13   15   14    11]; % Estimated
 
 plot_freqs = 1000 .* 2.^(-3:0.5:4);
 plot_threshold = interp1(thresholds_freqs,normal_threshold,plot_freqs);
-plot_levels = 0:5:100;
-plot_colors = jet(length(plot_levels)).*0.8;
+plot_levels = 20:15:110;
+plot_colors = lines(length(plot_levels));
 
 figure('Position', [ 500 200 1200 1000],
        'NumberTitle', 'off',
@@ -41,7 +43,7 @@ for i=1:2
   title(position_title{i});
   plot(log(plot_freqs), plot_threshold,'--k','linewidth',2);
   xlim(log([min(plot_freqs) max(plot_freqs)]));
-  ylim([-10 110]);
+  ylim([0 130]);
   set(gca,'xtick',log(plot_freqs(1:2:end)));
   set(gca,'xticklabel',plot_freqs(1:2:end));
   set(gca,'ytick',0:10:100);
