@@ -22,7 +22,9 @@ plot_threshold = interp1(thresholds_freqs,normal_threshold,plot_freqs);
 plot_levels = 20:15:110;
 plot_colors = lines(length(plot_levels));
 
-figure('Position', [ 500 200 1200 1000],
+set (0, "defaultaxesfontsize", 20);
+set (0, "defaulttextfontsize", 20);
+figure('Position', [ 500 200 1500 1000],
        'NumberTitle', 'off',
        'Name', 'Simple self-fitting GUI',
        'toolbar', 'none',
@@ -38,10 +40,10 @@ position_title = {'L E F T', 'R I G H T'};
 for i=1:2
   h.ax(i) = axes ('position', figure_positions{i});
   box('on');
-  h_threshold = plot(log(thresholds_freqs), zeros(size(thresholds_freqs)),'-k','linewidth',2);
+  h_threshold = plot(log(thresholds_freqs), zeros(size(thresholds_freqs)),'-k','linewidth',3);
   hold on;
   title(position_title{i});
-  plot(log(plot_freqs), plot_threshold,'--k','linewidth',2);
+  plot(log(plot_freqs), plot_threshold,'--k','linewidth',3);
   xlim(log([min(plot_freqs) max(plot_freqs)]));
   ylim([0 130]);
   set(gca,'xtick',log(plot_freqs(1:2:end)));
@@ -50,11 +52,11 @@ for i=1:2
   xlabel('Frequency / Hz');
   ylabel('Levels / dB SPL (in device)');
   for j=1:length(plot_levels)
-    plot(log(plot_freqs),ones(size(plot_freqs)).*plot_levels(j),'--','color',plot_colors(j,:),'linewidth',2);
+    plot(log(plot_freqs),ones(size(plot_freqs)).*plot_levels(j),'--','color',plot_colors(j,:),'linewidth',3);
   end
   h_amplified = zeros(size(plot_levels));
   for j=1:length(plot_levels)
-    h_amplified(j) = plot(log(plot_freqs),ones(size(plot_freqs)).*plot_levels(j),'-','color',plot_colors(j,:),'linewidth',2);
+    h_amplified(j) = plot(log(plot_freqs),ones(size(plot_freqs)).*plot_levels(j),'-','color',plot_colors(j,:),'linewidth',3);
   end
   h.h_activedata{i} = h_amplified;
   h.h_threshold{i} = h_threshold;
