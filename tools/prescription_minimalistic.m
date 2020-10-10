@@ -23,13 +23,14 @@ function [gt_data, gt_freqs, gt_levels] = prescription_minimalistic(freqs, thres
     reference_level = interp1(reference_freqs,reference_levels,gt_freqs(i),'extrap');
     threshold_level_left = interp1(freqs_ext,thresholds_left_ext,gt_freqs(i),'extrap');
     threshold_level_right = interp1(freqs_ext,thresholds_right_ext,gt_freqs(i),'extrap');
-    low_level_gain_left = min(maxgain,max(0,threshold_level_left-reference_level));
-    low_level_gain_right = min(maxgain,max(0,threshold_level_right-reference_level));
+    low_level_gain_left = max(0,threshold_level_left-reference_level);
+    low_level_gain_right = max(0,threshold_level_right-reference_level);
     margin_left = marginfactor.*(center-(reference_level+low_level_gain_left));
     margin_right = marginfactor.*(center-(reference_level+low_level_gain_right));
     gt_data_left(:,i) = interp1([gt_levels(1);reference_level+margin_left;reference_level+margin_left+low_level_gain_left.*rolloff;gt_levels(end)],[low_level_gain_left;low_level_gain_left;0;0],gt_levels);
     gt_data_right(:,i) = interp1([gt_levels(1);reference_level+margin_right;reference_level+margin_right+low_level_gain_right.*rolloff;gt_levels(end)],[low_level_gain_right;low_level_gain_right;0;0],gt_levels);
   end
   gt_data = [gt_data_left.';gt_data_right.'];
+  gt_data = min(maxgain,gt_data);
   gt_data = gt_data + min(0,maxlevel - (gt_data+gt_levels));
 end
