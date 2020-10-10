@@ -1,3 +1,4 @@
+#!/usr/bin/octave
 % Copyright 2018-2020 Marc René Schädler
 %
 % This file is part of the mobile hearing aid prototype project
@@ -6,6 +7,8 @@
 % The mobile hearing aid prototype project is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 %
 % You should have received a copy of the GNU General Public License along with the mobile hearing aid prototype project. If not, see http://www.gnu.org/licenses/.
+
+cd(fileparts(mfilename('fullpath')))
 
 close all
 clear
@@ -24,7 +27,7 @@ plot_colors = lines(length(plot_levels));
 
 set (0, "defaultaxesfontsize", 20);
 set (0, "defaulttextfontsize", 20);
-figure('Position', [ 500 200 1500 1000],
+h_figure = figure('Position', [ 500 200 1500 1000],
        'NumberTitle', 'off',
        'Name', 'Simple self-fitting GUI',
        'toolbar', 'none',
@@ -369,3 +372,4 @@ update_gaintable(gcf);
 update_noise(gcf);
 update_playback(gcf);
 update_live(gcf);
+waitfor(h_figure);
