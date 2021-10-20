@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2018 Marc René Schädler
+# Copyright 2018-2021 Marc René Schädler
 #
 # This file is part of the mobile hearing aid prototype project
 # The the mobile hearing aid prototype project is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -27,6 +27,11 @@ mhaplay() {
   mhacontrol "mha.transducers.mhachain.playback.level = ${LEVEL}"
   mhacontrol "mha.transducers.mhachain.playback.loop = ${LOOP}"
   mhacontrol "mha.transducers.mhachain.playback.filename = ${FILE}"
+}
+
+mhacalibation() {
+  local PEAKLEVEL="$1"
+  mhacontrol "mha.transducers.calib_in.peaklevel = ${PEAKLEVEL}"
 }
 
 text2speech() {
@@ -127,6 +132,10 @@ while true ; do
       ARGUMENTS=(${ARGUMENTS[@]})
       # level is -20*log10(20*10^-6) = 93.979
       mhaplay "${ARGUMENTS[0]}" "relative" "93.979" "${ARGUMENTS[1]}"
+    ;;
+    "calibration")
+      # peak level in dB
+      mhacalib ${ARGUMENTS[@]}
     ;;
     "thresholdnoise")
       thresholdnoise ${ARGUMENTS[@]}
